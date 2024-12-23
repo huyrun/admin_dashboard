@@ -1,0 +1,100 @@
+2024-12-23T10:50:15.850+0700	[34mINFO[0m	engine/engine.go:407	Initialize database connections
+2024-12-23T10:50:15.873+0700	[34mINFO[0m	engine/engine.go:407	Initialize configuration
+2024-12-23T10:50:15.932+0700	[34mINFO[0m	engine/engine.go:407	Initialize navigation buttons
+2024-12-23T10:50:15.933+0700	[34mINFO[0m	engine/engine.go:407	Initialize plugins
+2024-12-23T10:50:15.933+0700	[34mINFO[0m	engine/engine.go:407	Initialize success🍺🍺
+2024-12-23T10:50:50.866+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671290717349258508650001", "statuscode": "200", "method": "GET", "path": "/admin/login"}
+2024-12-23T10:50:50.885+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671290717349258508780003", "statuscode": "200", "method": "GET", "path": "/admin/assets/login/dist/all.min.js"}
+2024-12-23T10:50:50.885+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671290717349258508780002", "statuscode": "200", "method": "GET", "path": "/admin/assets/login/dist/all.min.css"}
+2024-12-23T10:50:54.968+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671290717349258548080004", "statuscode": "200", "method": "POST", "path": "/admin/signin"}
+2024-12-23T10:50:55.012+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671290717349258550120006", "statuscode": "200", "method": "GET", "path": "/admin/assets/dist/img/avatar04.png"}
+2024-12-23T10:50:55.013+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671290717349258550120008", "statuscode": "200", "method": "GET", "path": "/admin/assets/dist/js/datatable.min.43c12443cf.js"}
+2024-12-23T10:50:55.014+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671290717349258550110005", "statuscode": "200", "method": "GET", "path": "/admin/assets/dist/js/all.min.506636f003.js"}
+2024-12-23T10:50:55.014+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671290717349258550120007", "statuscode": "200", "method": "GET", "path": "/admin/assets/dist/css/all.min.dd4b069ab5.css"}
+2024-12-23T10:50:55.018+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671290717349258550170010", "statuscode": "200", "method": "GET", "path": "/admin/assets/dist/js/tree.min.b68a8b6689.js"}
+2024-12-23T10:50:55.018+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671290717349258550130009", "statuscode": "200", "method": "GET", "path": "/admin/assets/dist/js/form.min.4022a41f70.js"}
+2024-12-23T10:50:55.019+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671290717349258550180011", "statuscode": "200", "method": "GET", "path": "/admin/assets/dist/js/treeview.min.3095cd8c12.js"}
+2024-12-23T10:50:55.024+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671290717349258550210012", "statuscode": "200", "method": "GET", "path": "/admin/assets/chart.min.js"}
+2024-12-23T10:50:55.038+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671290717349258550380013", "statuscode": "200", "method": "GET", "path": "/admin/assets/dist/js/all_2.min.1cd3070239.js"}
+2024-12-23T10:50:55.061+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671290717349258550610014", "statuscode": "200", "method": "GET", "path": "/admin/assets/dist/fonts/fontawesome-webfont.woff2"}
+2024-12-23T10:50:55.085+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671290717349258550850015", "statuscode": "200", "method": "GET", "path": "/admin/assets/dist/css/fonts/6xK3dSBYKcSV-LCoeQqfX1RYOo3qOK7g.ttf"}
+2024-12-23T10:50:55.097+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671290717349258550970016", "statuscode": "200", "method": "GET", "path": "/admin/assets/dist/css/fonts/6xKydSBYKcSV-LCoeQqfX1RYOo3i54rwlxdr.ttf"}
+2024-12-23T10:51:10.858+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671290717349258708310017", "statuscode": "200", "method": "GET", "path": "/admin/info/entity_comments"}
+2024-12-23T10:58:20.836+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671290717349263008160018", "statuscode": "200", "method": "GET", "path": "/admin/info/activities"}
+2024-12-23T11:09:09.817+0700	[34mINFO[0m	engine/engine.go:407	Initialize database connections
+2024-12-23T11:09:09.843+0700	[34mINFO[0m	engine/engine.go:407	Initialize configuration
+2024-12-23T11:09:09.848+0700	[34mINFO[0m	engine/engine.go:407	Initialize navigation buttons
+2024-12-23T11:09:09.848+0700	[34mINFO[0m	engine/engine.go:407	Initialize plugins
+2024-12-23T11:09:09.848+0700	[34mINFO[0m	engine/engine.go:407	Initialize success🍺🍺
+2024-12-23T11:09:14.395+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671441717349269543820001", "statuscode": "200", "method": "GET", "path": "/admin/info/activities"}
+2024-12-23T11:09:16.732+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671441717349269567150002", "statuscode": "200", "method": "GET", "path": "/admin/info/activities"}
+2024-12-23T11:10:03.310+0700	[34mINFO[0m	engine/engine.go:407	Initialize database connections
+2024-12-23T11:10:03.331+0700	[34mINFO[0m	engine/engine.go:407	Initialize configuration
+2024-12-23T11:10:03.335+0700	[34mINFO[0m	engine/engine.go:407	Initialize navigation buttons
+2024-12-23T11:10:03.336+0700	[34mINFO[0m	engine/engine.go:407	Initialize plugins
+2024-12-23T11:10:03.336+0700	[34mINFO[0m	engine/engine.go:407	Initialize success🍺🍺
+2024-12-23T11:10:05.768+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671455317349270057350001", "statuscode": "200", "method": "GET", "path": "/admin/info/activities"}
+2024-12-23T11:10:08.425+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671455317349270084030002", "statuscode": "200", "method": "GET", "path": "/admin/info/activities"}
+2024-12-23T11:22:20.692+0700	[34mINFO[0m	engine/engine.go:407	Initialize database connections
+2024-12-23T11:22:20.709+0700	[34mINFO[0m	engine/engine.go:407	Initialize configuration
+2024-12-23T11:22:20.715+0700	[34mINFO[0m	engine/engine.go:407	Initialize navigation buttons
+2024-12-23T11:22:20.715+0700	[34mINFO[0m	engine/engine.go:407	Initialize plugins
+2024-12-23T11:22:20.715+0700	[34mINFO[0m	engine/engine.go:407	Initialize success🍺🍺
+2024-12-23T11:22:23.358+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671542917349277433040001", "statuscode": "200", "method": "GET", "path": "/admin/info/activities"}
+2024-12-23T11:22:23.421+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671542917349277434160002", "statuscode": "200", "method": "GET", "path": "/admin/assets/dist/css/blue@2x.png"}
+2024-12-23T11:32:10.248+0700	[34mINFO[0m	engine/engine.go:407	Initialize database connections
+2024-12-23T11:32:10.266+0700	[34mINFO[0m	engine/engine.go:407	Initialize configuration
+2024-12-23T11:32:10.270+0700	[34mINFO[0m	engine/engine.go:407	Initialize navigation buttons
+2024-12-23T11:32:10.271+0700	[34mINFO[0m	engine/engine.go:407	Initialize plugins
+2024-12-23T11:32:10.271+0700	[34mINFO[0m	engine/engine.go:407	Initialize success🍺🍺
+2024-12-23T11:32:11.738+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349283316960001", "statuscode": "200", "method": "GET", "path": "/admin/info/activities"}
+2024-12-23T11:32:22.448+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349283423980002", "statuscode": "200", "method": "GET", "path": "/admin/info/users"}
+2024-12-23T11:32:24.474+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349283444440003", "statuscode": "200", "method": "GET", "path": "/admin/info/users/new"}
+2024-12-23T11:32:32.705+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349283526660004", "statuscode": "200", "method": "GET", "path": "/admin/info/users"}
+2024-12-23T11:32:39.249+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349283592000005", "statuscode": "200", "method": "GET", "path": "/admin/info/activities/new"}
+2024-12-23T11:32:53.511+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349283735070006", "statuscode": "200", "method": "GET", "path": "/admin/assets/dist/fonts/glyphicons-halflings-regular.woff2"}
+2024-12-23T11:33:01.803+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349283817530007", "statuscode": "200", "method": "POST", "path": "/admin/new/activities"}
+2024-12-23T11:33:24.004+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349284039540008", "statuscode": "200", "method": "POST", "path": "/admin/new/activities"}
+2024-12-23T11:34:26.247+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349284661810009", "statuscode": "200", "method": "GET", "path": "/admin/info/categories"}
+2024-12-23T11:34:27.616+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349284675880010", "statuscode": "200", "method": "GET", "path": "/admin/info/categories/new"}
+2024-12-23T11:34:31.941+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349284718970011", "statuscode": "200", "method": "POST", "path": "/admin/new/categories"}
+2024-12-23T11:34:36.364+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349284763160012", "statuscode": "200", "method": "POST", "path": "/admin/new/categories"}
+2024-12-23T11:36:15.070+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349285750130013", "statuscode": "200", "method": "GET", "path": "/admin/menu"}
+2024-12-23T11:37:08.552+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349286284960014", "statuscode": "200", "method": "POST", "path": "/admin/menu/new"}
+2024-12-23T11:37:12.770+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349286327250015", "statuscode": "200", "method": "GET", "path": "/admin/menu"}
+2024-12-23T11:37:18.713+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349286386730016", "statuscode": "200", "method": "GET", "path": "/admin/menu"}
+2024-12-23T11:37:20.188+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349286401520017", "statuscode": "200", "method": "GET", "path": "/admin/menu"}
+2024-12-23T11:37:28.484+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349286484390018", "statuscode": "200", "method": "GET", "path": "/admin/menu/edit/show"}
+2024-12-23T11:37:32.550+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349286525080019", "statuscode": "200", "method": "POST", "path": "/admin/menu/edit"}
+2024-12-23T11:37:37.198+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349286571630020", "statuscode": "200", "method": "GET", "path": "/admin/menu"}
+2024-12-23T11:37:40.730+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349286606780021", "statuscode": "200", "method": "GET", "path": "/admin/menu/edit/show"}
+2024-12-23T11:37:44.070+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349286640250022", "statuscode": "200", "method": "POST", "path": "/admin/menu/edit"}
+2024-12-23T11:37:49.528+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349286694910023", "statuscode": "200", "method": "GET", "path": "/admin/info/categories"}
+2024-12-23T11:37:57.182+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349286771410024", "statuscode": "200", "method": "GET", "path": "/admin/info/categories"}
+2024-12-23T11:38:01.529+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349286814860025", "statuscode": "200", "method": "GET", "path": "/admin/info/categories"}
+2024-12-23T11:41:02.981+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349288629120026", "statuscode": "200", "method": "GET", "path": "/admin/menu"}
+2024-12-23T11:41:30.803+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349288907510027", "statuscode": "200", "method": "POST", "path": "/admin/menu/new"}
+2024-12-23T11:41:34.990+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349288949510028", "statuscode": "200", "method": "GET", "path": "/admin/menu"}
+2024-12-23T11:41:37.007+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349288969870029", "statuscode": "200", "method": "GET", "path": "/admin/info/activites"}
+2024-12-23T11:41:39.468+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349288994240030", "statuscode": "200", "method": "GET", "path": "/admin/info/categories"}
+2024-12-23T11:41:40.266+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349289002390031", "statuscode": "200", "method": "GET", "path": "/admin/info/activites"}
+2024-12-23T11:41:41.842+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349289017990032", "statuscode": "200", "method": "GET", "path": "/admin/info/categories"}
+2024-12-23T11:41:47.118+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349289070890033", "statuscode": "200", "method": "GET", "path": "/admin/info/activites"}
+2024-12-23T11:41:48.885+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349289088420034", "statuscode": "200", "method": "GET", "path": "/admin/info/categories"}
+2024-12-23T11:41:49.929+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349289099020035", "statuscode": "200", "method": "GET", "path": "/admin/info/activites"}
+2024-12-23T11:41:55.914+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349289158790036", "statuscode": "200", "method": "GET", "path": "/admin/menu"}
+2024-12-23T11:41:58.281+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349289182310037", "statuscode": "200", "method": "GET", "path": "/admin/menu/edit/show"}
+2024-12-23T11:42:01.289+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349289212520038", "statuscode": "200", "method": "GET", "path": "/admin/menu"}
+2024-12-23T11:42:03.380+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349289233320039", "statuscode": "200", "method": "GET", "path": "/admin/menu/edit/show"}
+2024-12-23T11:42:08.038+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349289279940040", "statuscode": "200", "method": "POST", "path": "/admin/menu/edit"}
+2024-12-23T11:42:09.289+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349289292450041", "statuscode": "200", "method": "GET", "path": "/admin/menu"}
+2024-12-23T11:42:10.696+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349289306560042", "statuscode": "200", "method": "GET", "path": "/admin/info/activities"}
+2024-12-23T11:42:11.979+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671689917349289319370043", "statuscode": "200", "method": "GET", "path": "/admin/info/categories"}
+2024-12-23T11:57:35.704+0700	[34mINFO[0m	engine/engine.go:407	Initialize database connections
+2024-12-23T11:57:35.724+0700	[34mINFO[0m	engine/engine.go:407	Initialize configuration
+2024-12-23T11:57:35.729+0700	[34mINFO[0m	engine/engine.go:407	Initialize navigation buttons
+2024-12-23T11:57:35.729+0700	[34mINFO[0m	engine/engine.go:407	Initialize plugins
+2024-12-23T11:57:35.730+0700	[34mINFO[0m	engine/engine.go:407	Initialize success🍺🍺
+2024-12-23T11:57:36.114+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671920017349298561020001", "statuscode": "200", "method": "GET", "path": "/admin/assets/dist/css/blue.png"}
+2024-12-23T11:57:37.069+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671920017349298570110002", "statuscode": "200", "method": "GET", "path": "/admin/info/categories"}
+2024-12-23T11:57:38.334+0700	[34mINFO[0m	controller/handler.go:25	[GoAdmin] access log	{"traceID": "0a0a34671920017349298582870003", "statuscode": "200", "method": "GET", "path": "/admin/info/categories"}

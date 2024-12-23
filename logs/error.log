@@ -1,0 +1,520 @@
+2024-12-23T10:51:10.860+0700	[31mERROR[0m	logger/logger.go:313	GlobalDeferHandler error pq: relation "public.entity_comments" does not exist	{"traceID": "0a0a34671290717349258708310017"}
+github.com/GoAdminGroup/go-admin/modules/logger.ErrorCtx
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/logger/logger.go:313
+github.com/GoAdminGroup/go-admin/plugins/admin/controller.(*Handler).GlobalDeferHandler
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/controller/handler.go:32
+runtime.gopanic
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/runtime/panic.go:785
+github.com/GoAdminGroup/go-admin/modules/db.CommonQuery
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/db/performer.go:20
+github.com/GoAdminGroup/go-admin/modules/db.(*Postgresql).QueryWithConnection
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/db/postgresql.go:51
+github.com/GoAdminGroup/go-admin/plugins/admin/modules/table.(*DefaultTable).getDataFromDatabase
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/modules/table/default.go:566
+github.com/GoAdminGroup/go-admin/plugins/admin/modules/table.(*DefaultTable).GetData
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/modules/table/default.go:149
+github.com/GoAdminGroup/go-admin/plugins/admin/controller.(*Handler).showTableData
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/controller/show.go:71
+github.com/GoAdminGroup/go-admin/plugins/admin/controller.(*Handler).showTable
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/controller/show.go:103
+github.com/GoAdminGroup/go-admin/plugins/admin/controller.(*Handler).ShowInfo
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/controller/show.go:61
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin/modules/guard.(*Guard).CheckPrefix
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/modules/guard/guard.go:51
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).initRouter.Middleware.(*Invoker).Middleware.func6
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/auth/middleware.go:132
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).themeMiddleware
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/router.go:141
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).traceIDMiddleware
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/router.go:123
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).globalErrorHandler
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/router.go:111
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/adapter/gin.(*Gin).AddHandler.func1
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/adapter/gin/gin.go:87
+github.com/gin-gonic/gin.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/net/http/server.go:3210
+net/http.(*conn).serve
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/net/http/server.go:2092
+2024-12-23T10:58:20.841+0700	[31mERROR[0m	logger/logger.go:313	GlobalDeferHandler error pq: relation "public.activities" does not exist	{"traceID": "0a0a34671290717349263008160018"}
+github.com/GoAdminGroup/go-admin/modules/logger.ErrorCtx
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/logger/logger.go:313
+github.com/GoAdminGroup/go-admin/plugins/admin/controller.(*Handler).GlobalDeferHandler
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/controller/handler.go:32
+runtime.gopanic
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/runtime/panic.go:785
+github.com/GoAdminGroup/go-admin/modules/db.CommonQuery
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/db/performer.go:20
+github.com/GoAdminGroup/go-admin/modules/db.(*Postgresql).QueryWithConnection
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/db/postgresql.go:51
+github.com/GoAdminGroup/go-admin/plugins/admin/modules/table.(*DefaultTable).getDataFromDatabase
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/modules/table/default.go:566
+github.com/GoAdminGroup/go-admin/plugins/admin/modules/table.(*DefaultTable).GetData
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/modules/table/default.go:149
+github.com/GoAdminGroup/go-admin/plugins/admin/controller.(*Handler).showTableData
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/controller/show.go:71
+github.com/GoAdminGroup/go-admin/plugins/admin/controller.(*Handler).showTable
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/controller/show.go:103
+github.com/GoAdminGroup/go-admin/plugins/admin/controller.(*Handler).ShowInfo
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/controller/show.go:61
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin/modules/guard.(*Guard).CheckPrefix
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/modules/guard/guard.go:51
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).initRouter.Middleware.(*Invoker).Middleware.func6
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/auth/middleware.go:132
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).themeMiddleware
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/router.go:141
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).traceIDMiddleware
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/router.go:123
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).globalErrorHandler
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/router.go:111
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/adapter/gin.(*Gin).AddHandler.func1
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/adapter/gin/gin.go:87
+github.com/gin-gonic/gin.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/net/http/server.go:3210
+net/http.(*conn).serve
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/net/http/server.go:2092
+2024-12-23T11:09:14.401+0700	[31mERROR[0m	logger/logger.go:313	GlobalDeferHandler error runtime error: invalid memory address or nil pointer dereference	{"traceID": "0a0a34671441717349269543820001"}
+github.com/GoAdminGroup/go-admin/modules/logger.ErrorCtx
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/logger/logger.go:313
+github.com/GoAdminGroup/go-admin/plugins/admin/controller.(*Handler).GlobalDeferHandler
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/controller/handler.go:32
+runtime.gopanic
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/runtime/panic.go:785
+runtime.panicmem
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/runtime/panic.go:262
+runtime.sigpanic
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/runtime/signal_unix.go:917
+database/sql.(*DB).conn
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/database/sql/sql.go:1309
+database/sql.(*DB).query
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/database/sql/sql.go:1751
+database/sql.(*DB).QueryContext.func1
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/database/sql/sql.go:1734
+database/sql.(*DB).retry
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/database/sql/sql.go:1568
+database/sql.(*DB).QueryContext
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/database/sql/sql.go:1733
+database/sql.(*DB).Query
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/database/sql/sql.go:1747
+github.com/GoAdminGroup/go-admin/modules/db.CommonQuery
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/db/performer.go:17
+github.com/GoAdminGroup/go-admin/modules/db.(*Postgresql).QueryWithConnection
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/db/postgresql.go:51
+github.com/GoAdminGroup/go-admin/modules/db.(*SQL).ShowColumns
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/db/statement.go:449
+github.com/GoAdminGroup/go-admin/plugins/admin/modules/table.(*DefaultTable).getColumns
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/modules/table/default.go:1139
+github.com/GoAdminGroup/go-admin/plugins/admin/modules/table.(*DefaultTable).getDataFromDatabase
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/modules/table/default.go:484
+github.com/GoAdminGroup/go-admin/plugins/admin/modules/table.(*DefaultTable).GetData
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/modules/table/default.go:149
+github.com/GoAdminGroup/go-admin/plugins/admin/controller.(*Handler).showTableData
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/controller/show.go:71
+github.com/GoAdminGroup/go-admin/plugins/admin/controller.(*Handler).showTable
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/controller/show.go:103
+github.com/GoAdminGroup/go-admin/plugins/admin/controller.(*Handler).ShowInfo
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/controller/show.go:61
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin/modules/guard.(*Guard).CheckPrefix
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/modules/guard/guard.go:51
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).initRouter.Middleware.(*Invoker).Middleware.func6
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/auth/middleware.go:132
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).themeMiddleware
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/router.go:141
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).traceIDMiddleware
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/router.go:123
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).globalErrorHandler
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/router.go:111
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/adapter/gin.(*Gin).AddHandler.func1
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/adapter/gin/gin.go:87
+github.com/gin-gonic/gin.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/net/http/server.go:3210
+net/http.(*conn).serve
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/net/http/server.go:2092
+2024-12-23T11:09:16.734+0700	[31mERROR[0m	logger/logger.go:313	GlobalDeferHandler error runtime error: invalid memory address or nil pointer dereference	{"traceID": "0a0a34671441717349269567150002"}
+github.com/GoAdminGroup/go-admin/modules/logger.ErrorCtx
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/logger/logger.go:313
+github.com/GoAdminGroup/go-admin/plugins/admin/controller.(*Handler).GlobalDeferHandler
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/controller/handler.go:32
+runtime.gopanic
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/runtime/panic.go:785
+runtime.panicmem
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/runtime/panic.go:262
+runtime.sigpanic
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/runtime/signal_unix.go:917
+database/sql.(*DB).conn
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/database/sql/sql.go:1309
+database/sql.(*DB).query
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/database/sql/sql.go:1751
+database/sql.(*DB).QueryContext.func1
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/database/sql/sql.go:1734
+database/sql.(*DB).retry
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/database/sql/sql.go:1568
+database/sql.(*DB).QueryContext
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/database/sql/sql.go:1733
+database/sql.(*DB).Query
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/database/sql/sql.go:1747
+github.com/GoAdminGroup/go-admin/modules/db.CommonQuery
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/db/performer.go:17
+github.com/GoAdminGroup/go-admin/modules/db.(*Postgresql).QueryWithConnection
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/db/postgresql.go:51
+github.com/GoAdminGroup/go-admin/modules/db.(*SQL).ShowColumns
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/db/statement.go:449
+github.com/GoAdminGroup/go-admin/plugins/admin/modules/table.(*DefaultTable).getColumns
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/modules/table/default.go:1139
+github.com/GoAdminGroup/go-admin/plugins/admin/modules/table.(*DefaultTable).getDataFromDatabase
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/modules/table/default.go:484
+github.com/GoAdminGroup/go-admin/plugins/admin/modules/table.(*DefaultTable).GetData
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/modules/table/default.go:149
+github.com/GoAdminGroup/go-admin/plugins/admin/controller.(*Handler).showTableData
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/controller/show.go:71
+github.com/GoAdminGroup/go-admin/plugins/admin/controller.(*Handler).showTable
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/controller/show.go:103
+github.com/GoAdminGroup/go-admin/plugins/admin/controller.(*Handler).ShowInfo
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/controller/show.go:61
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin/modules/guard.(*Guard).CheckPrefix
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/modules/guard/guard.go:51
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).initRouter.Middleware.(*Invoker).Middleware.func6
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/auth/middleware.go:132
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).themeMiddleware
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/router.go:141
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).traceIDMiddleware
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/router.go:123
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).globalErrorHandler
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/router.go:111
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/adapter/gin.(*Gin).AddHandler.func1
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/adapter/gin/gin.go:87
+github.com/gin-gonic/gin.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/net/http/server.go:3210
+net/http.(*conn).serve
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/net/http/server.go:2092
+2024-12-23T11:10:05.772+0700	[31mERROR[0m	logger/logger.go:313	GlobalDeferHandler error pq: relation "public.activities" does not exist	{"traceID": "0a0a34671455317349270057350001"}
+github.com/GoAdminGroup/go-admin/modules/logger.ErrorCtx
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/logger/logger.go:313
+github.com/GoAdminGroup/go-admin/plugins/admin/controller.(*Handler).GlobalDeferHandler
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/controller/handler.go:32
+runtime.gopanic
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/runtime/panic.go:785
+github.com/GoAdminGroup/go-admin/modules/db.CommonQuery
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/db/performer.go:20
+github.com/GoAdminGroup/go-admin/modules/db.(*Postgresql).QueryWithConnection
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/db/postgresql.go:51
+github.com/GoAdminGroup/go-admin/plugins/admin/modules/table.(*DefaultTable).getDataFromDatabase
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/modules/table/default.go:566
+github.com/GoAdminGroup/go-admin/plugins/admin/modules/table.(*DefaultTable).GetData
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/modules/table/default.go:149
+github.com/GoAdminGroup/go-admin/plugins/admin/controller.(*Handler).showTableData
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/controller/show.go:71
+github.com/GoAdminGroup/go-admin/plugins/admin/controller.(*Handler).showTable
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/controller/show.go:103
+github.com/GoAdminGroup/go-admin/plugins/admin/controller.(*Handler).ShowInfo
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/controller/show.go:61
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin/modules/guard.(*Guard).CheckPrefix
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/modules/guard/guard.go:51
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).initRouter.Middleware.(*Invoker).Middleware.func6
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/auth/middleware.go:132
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).themeMiddleware
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/router.go:141
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).traceIDMiddleware
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/router.go:123
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).globalErrorHandler
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/router.go:111
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/adapter/gin.(*Gin).AddHandler.func1
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/adapter/gin/gin.go:87
+github.com/gin-gonic/gin.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/net/http/server.go:3210
+net/http.(*conn).serve
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/net/http/server.go:2092
+2024-12-23T11:10:08.428+0700	[31mERROR[0m	logger/logger.go:313	GlobalDeferHandler error pq: relation "public.activities" does not exist	{"traceID": "0a0a34671455317349270084030002"}
+github.com/GoAdminGroup/go-admin/modules/logger.ErrorCtx
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/logger/logger.go:313
+github.com/GoAdminGroup/go-admin/plugins/admin/controller.(*Handler).GlobalDeferHandler
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/controller/handler.go:32
+runtime.gopanic
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/runtime/panic.go:785
+github.com/GoAdminGroup/go-admin/modules/db.CommonQuery
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/db/performer.go:20
+github.com/GoAdminGroup/go-admin/modules/db.(*Postgresql).QueryWithConnection
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/db/postgresql.go:51
+github.com/GoAdminGroup/go-admin/plugins/admin/modules/table.(*DefaultTable).getDataFromDatabase
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/modules/table/default.go:566
+github.com/GoAdminGroup/go-admin/plugins/admin/modules/table.(*DefaultTable).GetData
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/modules/table/default.go:149
+github.com/GoAdminGroup/go-admin/plugins/admin/controller.(*Handler).showTableData
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/controller/show.go:71
+github.com/GoAdminGroup/go-admin/plugins/admin/controller.(*Handler).showTable
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/controller/show.go:103
+github.com/GoAdminGroup/go-admin/plugins/admin/controller.(*Handler).ShowInfo
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/controller/show.go:61
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin/modules/guard.(*Guard).CheckPrefix
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/modules/guard/guard.go:51
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).initRouter.Middleware.(*Invoker).Middleware.func6
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/auth/middleware.go:132
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).themeMiddleware
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/router.go:141
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).traceIDMiddleware
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/router.go:123
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).globalErrorHandler
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/router.go:111
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/adapter/gin.(*Gin).AddHandler.func1
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/adapter/gin/gin.go:87
+github.com/gin-gonic/gin.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/net/http/server.go:3210
+net/http.(*conn).serve
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/net/http/server.go:2092
+2024-12-23T11:33:01.785+0700	[31mERROR[0m	logger/logger.go:313	insert data error: pq: invalid input syntax for type smallint: "test"	{"traceID": "0a0a34671689917349283817530007"}
+github.com/GoAdminGroup/go-admin/modules/logger.ErrorCtx
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/logger/logger.go:313
+github.com/GoAdminGroup/go-admin/plugins/admin/controller.(*Handler).NewForm
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/controller/new.go:118
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin/modules/guard.(*Guard).NewForm
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/modules/guard/new.go:121
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin/modules/guard.(*Guard).CheckPrefix
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/modules/guard/guard.go:51
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).initRouter.Middleware.(*Invoker).Middleware.func6
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/auth/middleware.go:132
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).themeMiddleware
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/router.go:141
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).traceIDMiddleware
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/router.go:123
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).globalErrorHandler
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/router.go:111
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/adapter/gin.(*Gin).AddHandler.func1
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/adapter/gin/gin.go:87
+github.com/gin-gonic/gin.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/net/http/server.go:3210
+net/http.(*conn).serve
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/net/http/server.go:2092
+2024-12-23T11:33:23.983+0700	[31mERROR[0m	logger/logger.go:313	insert data error: pq: insert or update on table "activities" violates foreign key constraint "fk_activities_entity"	{"traceID": "0a0a34671689917349284039540008"}
+github.com/GoAdminGroup/go-admin/modules/logger.ErrorCtx
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/logger/logger.go:313
+github.com/GoAdminGroup/go-admin/plugins/admin/controller.(*Handler).NewForm
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/controller/new.go:118
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin/modules/guard.(*Guard).NewForm
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/modules/guard/new.go:121
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin/modules/guard.(*Guard).CheckPrefix
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/modules/guard/guard.go:51
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).initRouter.Middleware.(*Invoker).Middleware.func6
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/modules/auth/middleware.go:132
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).themeMiddleware
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/router.go:141
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).traceIDMiddleware
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/router.go:123
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/plugins/admin.(*Admin).globalErrorHandler
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/plugins/admin/router.go:111
+github.com/GoAdminGroup/go-admin/context.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/context/context.go:105
+github.com/GoAdminGroup/go-admin/adapter/gin.(*Gin).AddHandler.func1
+	/Users/huy.pham/go/pkg/mod/github.com/!go!admin!group/go-admin@v1.2.26/adapter/gin/gin.go:87
+github.com/gin-gonic/gin.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.CustomRecoveryWithWriter.func1
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102
+github.com/gin-gonic/gin.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.LoggerWithConfig.func1
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/logger.go:249
+github.com/gin-gonic/gin.(*Context).Next
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
+github.com/gin-gonic/gin.(*Engine).handleHTTPRequest
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633
+github.com/gin-gonic/gin.(*Engine).ServeHTTP
+	/Users/huy.pham/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589
+net/http.serverHandler.ServeHTTP
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/net/http/server.go:3210
+net/http.(*conn).serve
+	/opt/homebrew/Cellar/go/1.23.4/libexec/src/net/http/server.go:2092

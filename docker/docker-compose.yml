@@ -1,0 +1,17 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres_container
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init_data/admin.sql:/docker-entrypoint-initdb.d/admin.sql
+      - ./init_data/create_wish_user.sql:/docker-entrypoint-initdb.d/create_wish_user.sql
+      - ./init_data/wishlist_struct.sql:/docker-entrypoint-initdb.d/wishlist_struct.sql
