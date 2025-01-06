@@ -5,13 +5,13 @@ database:
     port: 5432
     user: postgres
     pwd: postgres
-    name: postgres    
+    name: postgres
     max_idle_con: 5
     max_open_con: 10
 app_id: Wt7uHgL7gBd6
 language: en
 prefix: admin
-theme: sword
+theme: adminlte
 store:
   path: ./uploads
   prefix: uploads
@@ -32,7 +32,7 @@ bootstrap_file_path: /Users/huy.pham/study/project/bootstrap.go
 go_mod_file_path: /Users/huy.pham/study/project/go.mod
 allow_del_operation_log: false
 operation_log_off: false
-asset_root_path: ./public/
+asset_root_path: /Users/huy.pham/study/project/public/
 logger:
   encoder:
     time_key: ts

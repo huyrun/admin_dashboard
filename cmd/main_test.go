@@ -1,12 +1,12 @@
 package main
 
 import (
-	"github.com/GoAdminGroup/go-admin/modules/config"
-	"github.com/GoAdminGroup/go-admin/tests"
-	"github.com/GoAdminGroup/go-admin/tests/common"
-	"github.com/GoAdminGroup/go-admin/tests/frameworks/gin"
-	"github.com/GoAdminGroup/go-admin/tests/web"
 	"github.com/gavv/httpexpect"
+	"github.com/huyrun/go-admin/modules/config"
+	"github.com/huyrun/go-admin/tests"
+	"github.com/huyrun/go-admin/tests/common"
+	"github.com/huyrun/go-admin/tests/frameworks/gin"
+	"github.com/huyrun/go-admin/tests/web"
 	"log"
 	"project/tables"
 	"testing"

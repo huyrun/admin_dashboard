@@ -1,63 +1,328 @@
 package tables
 
 import (
-	"github.com/GoAdminGroup/go-admin/context"
-	"github.com/GoAdminGroup/go-admin/modules/db"
-	"github.com/GoAdminGroup/go-admin/plugins/admin/modules/table"
-	"github.com/GoAdminGroup/go-admin/template/types/form"
+	"encoding/hex"
+	"errors"
+	"fmt"
+	"github.com/google/uuid"
+	"github.com/huyrun/go-admin/context"
+	"github.com/huyrun/go-admin/modules/db"
+	"github.com/huyrun/go-admin/modules/utils"
+	form2 "github.com/huyrun/go-admin/plugins/admin/modules/form"
+	"github.com/huyrun/go-admin/plugins/admin/modules/parameter"
+	"github.com/huyrun/go-admin/plugins/admin/modules/table"
+	"github.com/huyrun/go-admin/template/color"
+	"github.com/huyrun/go-admin/template/types"
+	"github.com/huyrun/go-admin/template/types/form"
+	"gopkg.in/yaml.v3"
+	"gorm.io/gorm"
+	"project/embed"
+	"time"
 )
 
-func GetUsersTable(ctx *context.Context) table.Table {
+type User struct {
+	db         *gorm.DB
+	conn       db.Connection
+	countries  []*Country
+	countryMap map[string]*Country
+	cities     map[string][]string
+}
 
-	users := table.NewDefaultTable(ctx, table.DefaultConfigWithDriver("postgresql"))
+type Country struct {
+	Name string `json:"name" yaml:"name"`
+	Code string `json:"code" yaml:"code"`
+}
+
+func NewUserTable(db *gorm.DB, conn db.Connection) (*User, error) {
+	var countries []*Country
+	err := yaml.Unmarshal(embed.CountriesData, &countries)
+	if err != nil {
+		return nil, err
+	}
+
+	countryMap := make(map[string]*Country)
+	for _, c := range countries {
+		countryMap[c.Code] = c
+	}
+
+	var cities map[string][]string
+	err = yaml.Unmarshal(embed.CitiesData, &cities)
+	if err != nil {
+		return nil, err
+	}
+
+	return &User{
+		db:         db,
+		conn:       conn,
+		countries:  countries,
+		countryMap: countryMap,
+		cities:     cities,
+	}, nil
+}
+
+func (t *User) GetUsersTable(ctx *context.Context) table.Table {
+	tableConfig := table.DefaultConfigWithDriver("postgresql")
+	tableConfig.PrimaryKey = table.PrimaryKey{
+		Type: db.UUID,
+		Name: "id",
+	}
+	users := table.NewDefaultTable(ctx, tableConfig)
 	tableName := "users"
-	info := users.GetInfo().HideFilterArea()
+	info := users.GetInfo().SetFilterFormLayout(form.LayoutFilter).SetSortField("created_at")
 
-	info.AddField("Created_at", "created_at", db.Timestamptz)
-	info.AddField("Updated_at", "updated_at", db.Timestamptz)
-	info.AddField("Id", "id", db.Text).
-		FieldFilterable()
-	info.AddField("Username", "username", db.Varchar)
-	info.AddField("First_name", "first_name", db.Varchar)
-	info.AddField("Last_name", "last_name", db.Varchar)
-	info.AddField("Email", "email", db.Varchar)
-	info.AddField("Role", "role", db.Varchar)
-	info.AddField("Password_hash", "password_hash", db.Text)
-	info.AddField("Age", "age", db.Int2)
-	info.AddField("Dob", "dob", db.Date)
-	info.AddField("Sex", "sex", db.Int8)
-	info.AddField("Country", "country", db.Varchar)
-	info.AddField("City", "city", db.Varchar)
-	info.AddField("Points", "points", db.Int2)
-	info.AddField("Avatar_url", "avatar_url", db.Varchar)
-	info.AddField("Google_sub", "google_sub", db.Varchar)
-	info.AddField("Fb_id", "fb_id", db.Varchar)
-	info.AddField("Status", "status", db.Int2)
+	info.SetQueryFilterFn(t.queryFilterFn)
+	info.SetDeleteFn(t.deleteFn)
+	info.AddField("ID", "id", db.UUID).FieldSortable().FieldFilterable().
+		FieldDisplay(func(value types.FieldModel) interface{} {
+			valueByte := []byte(value.Value)
+			if len(valueByte) != 16 {
+				return value.Value
+			}
+			u, err := uuid.FromBytes(valueByte)
+			if err != nil {
+				return value.Value
+			}
+			return u.String()
+		})
+	info.AddField("User Name", "username", db.Varchar).FieldSortable()
+	info.AddField("First Name", "first_name", db.Varchar).FieldSortable().FieldFilterable()
+	info.AddField("Last Name", "last_name", db.Varchar).FieldSortable().FieldFilterable()
+	info.AddField("Email", "email", db.Varchar).FieldSortable().FieldFilterable()
+	info.AddField("Role", "role", db.Varchar).FieldSortable()
+	info.AddField("Password Hash", "password_hash", db.Varchar)
+	info.AddField("Age", "age", db.Int2).FieldSortable()
+	info.AddField("DOB", "dob", db.Date).FieldSortable().
+		FieldDisplay(func(value types.FieldModel) interface{} {
+			v, err := time.Parse(time.RFC3339, value.Value)
+			if err != nil {
+				return value.Value
+			}
+			return v.Format("2006-01-02")
+		})
+	info.AddField("Sex", "sex", db.Tinyint).FieldSortable().FieldDisplay(func(model types.FieldModel) interface{} {
+		if model.Value == "0" {
+			return "👨 Men"
+		}
+		if model.Value == "1" {
+			return "👩 Women"
+		}
+		return "unknown"
+	})
+	info.AddField("Country", "country", db.Varchar).FieldSortable().FieldFilterable().
+		FieldDisplay(func(value types.FieldModel) interface{} {
+			c, _ := t.countryMap[value.Value]
+			if c == nil {
+				return value.Value
+			}
+			return c.Name
+		})
+	info.AddField("City", "city", db.Varchar).FieldSortable().FieldFilterable()
+	info.AddField("Points", "points", db.Int).FieldSortable()
+	info.AddField("Avatar URL", "avatar_url", db.Varchar).
+		FieldDisplay(func(value types.FieldModel) interface{} {
+			url := value.Value
+			display := url
+			if len(url) > 60 {
+				display = url[0:57] + "..."
+			}
+			return fmt.Sprintf(`<a target="_blank" href="%s">%s</a>`, url, display)
 
-	info.SetTable(tableName).SetTitle("Users").SetDescription("Users")
+		})
+	info.AddField("Google Sub", "google_sub", db.Varchar)
+	info.AddField("FbID", "fb_id", db.Varchar)
+	info.AddField("Status", "status", db.Tinyint).
+		FieldFilterable(types.FilterType{FormType: form.SelectSingle}).FieldSortable().FieldFilterOptions(types.FieldOptions{
+		{Value: "1", Text: "Active"},
+		{Value: "0", Text: "Inactive"},
+	}).
+		FieldDisplay(func(value types.FieldModel) interface{} {
+			if value.Value == "0" {
+				return fmt.Sprintf(`<span class="label" style="background-color: %s; color: %s;">Inactive</span>`, color.Gray, color.White)
+			}
+			if value.Value == "1" {
+				return fmt.Sprintf(`<span class="label" style="background-color: %s;  color: %s;">Active</span>`, color.RoyalBlue, color.White)
+			}
+			return fmt.Sprintf(`<span class="label" style="text-decoration: line-through; background-color: %s; color: %s;">Unknown</span>`, color.Red, color.Black)
+		})
+	info.AddField("Created At", "created_at", db.Timestamptz).FieldSortable().
+		FieldDisplay(func(value types.FieldModel) interface{} {
+			v, err := time.Parse(time.RFC3339, value.Value)
+			if err != nil {
+				return value.Value
+			}
+			return v.Format("2006-01-02 15:04:05")
+		})
+	info.AddField("UpdatedAt", "updated_at", db.Timestamptz).FieldSortable().
+		FieldDisplay(func(value types.FieldModel) interface{} {
+			v, err := time.Parse(time.RFC3339, value.Value)
+			if err != nil {
+				return value.Value
+			}
+			return v.Format("2006-01-02 15:04:05")
+		})
+
+	info.SetTable(tableName).SetTitle("Users").SetDescription("Users").AddCSS(cssTableNoWrap)
 
 	formList := users.GetForm()
-	formList.AddField("Created_at", "created_at", db.Timestamptz, form.Datetime)
-	formList.AddField("Updated_at", "updated_at", db.Timestamptz, form.Datetime)
-	formList.AddField("Id", "id", db.Text, form.Default)
-	formList.AddField("Username", "username", db.Varchar, form.Text)
-	formList.AddField("First_name", "first_name", db.Varchar, form.Text)
-	formList.AddField("Last_name", "last_name", db.Varchar, form.Text)
+	formList.SetInsertFn(t.insert)
+	formList.SetPreProcessFn(t.preProcess)
+	formList.AddField("User Name", "username", db.Varchar, form.Text)
+	formList.AddField("First Name", "first_name", db.Varchar, form.Text)
+	formList.AddField("Last Name", "last_name", db.Varchar, form.Text)
 	formList.AddField("Email", "email", db.Varchar, form.Email)
 	formList.AddField("Role", "role", db.Varchar, form.Text)
-	formList.AddField("Password_hash", "password_hash", db.Text, form.RichText)
-	formList.AddField("Age", "age", db.Int2, form.Text)
-	formList.AddField("Dob", "dob", db.Date, form.Datetime)
-	formList.AddField("Sex", "sex", db.Int8, form.Text)
-	formList.AddField("Country", "country", db.Varchar, form.Text)
-	formList.AddField("City", "city", db.Varchar, form.Text)
-	formList.AddField("Points", "points", db.Int2, form.Text)
-	formList.AddField("Avatar_url", "avatar_url", db.Varchar, form.Text)
-	formList.AddField("Google_sub", "google_sub", db.Varchar, form.Text)
-	formList.AddField("Fb_id", "fb_id", db.Varchar, form.Text)
-	formList.AddField("Status", "status", db.Int2, form.Text)
+	formList.AddField("Password Hash", "password_hash", db.Text, form.Text).FieldDisplayButCanNotEditWhenUpdate()
+	formList.AddField("Age", "age", db.Int2, form.Number).FieldDefault("18")
+	formList.AddField("Dob", "dob", db.Date, form.Date).FieldDefault(time.Now().Format("2006-01-02"))
+	formList.AddField("Sex", "sex", db.Tinyint, form.Radio).
+		FieldOptions(types.FieldOptions{
+			{Text: "👨 Men", Value: "0"},
+			{Text: "👩 Women", Value: "1"},
+		}).FieldDefault("0")
+	//formList.AddField("Country", "country", db.Varchar, form.SelectSingle).
+	//	FieldInputWidth(4).FieldOptions(t.countryList()).
+	//	FieldOnChooseAjax("city", "/choose/country",
+	//		func(ctx *context.Context) (bool, string, interface{}) {
+	//			country := ctx.FormValue("value")
+	//			var data = make(selection.Options, 0)
+	//			cities := t.cities[country]
+	//			for _, city := range cities {
+	//				data = append(data, selection.Option{Text: city, ID: city})
+	//			}
+	//			return true, "ok", data
+	//		})
+	//formList.AddField("City", "city", db.Varchar, form.SelectSingle).FieldInputWidth(3).
+	//	FieldOptionInitFn(func(val types.FieldModel) types.FieldOptions {
+	//		return t.citiesBySelectedCity(val.Value)
+	//	})
+	formList.AddField("Country", "country", db.Varchar, form.SelectSingle).
+		FieldInputWidth(4).FieldOptions(t.countryList())
+	formList.AddField("City", "city", db.Varchar, form.Text).FieldInputWidth(4)
+	formList.AddField("Points", "points", db.Int, form.Number).FieldDefault("0")
+	formList.AddField("Avatar URL", "avatar_url", db.Varchar, form.Text)
+	formList.AddField("Google Sub", "google_sub", db.Varchar, form.Text)
+	formList.AddField("FbID", "fb_id", db.Varchar, form.Text)
+	formList.AddField("Status", "status", db.Tinyint, form.Switch).FieldDefault("1").
+		FieldOptions(types.FieldOptions{
+			{Text: "Active", Value: "1"},
+			{Text: "Inactive", Value: "0"},
+		})
 
 	formList.SetTable(tableName).SetTitle("Users").SetDescription("Users")
 
+	users.GetDetailFromInfo().SetTable("user").SetTitle("Users").SetDescription("Users").SetGetDataFn(t.getDataDetail)
+
 	return users
+}
+
+func (t *User) preProcess(values form2.Values) form2.Values {
+	switch values.Get(form2.PostTypeKey) {
+	case "0": // update
+		id := values.Get("id")
+		u, err := uuid.Parse(id)
+		if err != nil {
+			return values
+		}
+		uBytes := u[:]
+		values.Add("id", string(uBytes))
+		values.Add("updated_at", time.Now().Format(time.RFC3339))
+	case "1": // create
+		values.Add("created_at", time.Now().Format(time.RFC3339))
+		values.Add("updated_at", time.Now().Format(time.RFC3339))
+	}
+	return values
+}
+
+func (t *User) insert(values form2.Values) error {
+	var m = make(map[string]interface{})
+	for k := range values {
+		v := values.Get(k)
+		if (k != form2.PreviousKey && k != form2.TokenKey) && len(v) > 0 {
+			m[k] = v
+		}
+	}
+
+	id, _ := uuid.New().MarshalBinary()
+	m["id"] = id
+	if err := t.db.Table("users").Create(m).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (t *User) getDataDetail(param parameter.Parameters) ([]map[string]interface{}, int) {
+	id := param.GetFieldValue(parameter.PrimaryKey)
+	u, err := uuid.Parse(id)
+	if err != nil {
+		return []map[string]interface{}{}, 0
+	}
+	query := `select encode(id, 'hex')::uuid as id, username, first_name, last_name, email, role, password_hash, 
+       age, dob,sex, country, city, points, avatar_url, google_sub, fb_id, status, created_at, updated_at
+from users
+where id = decode(?, 'hex')
+order by id desc
+limit 1;`
+	res, err := t.conn.Query(query, hex.EncodeToString(u[:]))
+	if err != nil {
+		return []map[string]interface{}{}, 0
+	}
+	return res, 0
+}
+
+func (t *User) queryFilterFn(param parameter.Parameters, _ db.Connection) (ids []string, stopQuery bool) {
+	id := param.GetFieldValue("id")
+	u, err := uuid.Parse(id)
+	if err != nil {
+		return []string{}, false
+	}
+	uBytes := u[:]
+	return []string{string(uBytes)}, true
+}
+
+func (t *User) deleteFn(ids []string) error {
+	var convertedIDs []string
+	for _, id := range ids {
+		u, err := uuid.Parse(id)
+		if err != nil {
+			continue
+		}
+		uBytes := u[:]
+		convertedIDs = append(convertedIDs, string(uBytes))
+	}
+
+	result := t.db.Table("users").Where("id IN ?", convertedIDs).Delete(nil)
+	if result.Error != nil {
+		return result.Error
+	}
+	if result.RowsAffected == 0 {
+		return errors.New("no record found to delete")
+	}
+	return nil
+}
+
+func (t *User) countryList() types.FieldOptions {
+	var fieldOptions = types.FieldOptions{}
+	for _, c := range t.countries {
+		fieldOptions = append(fieldOptions, types.FieldOption{Text: c.Name, Value: c.Code})
+	}
+	return fieldOptions
+}
+
+func (t *User) citiesBySelectedCity(selectedCity string) types.FieldOptions {
+	data := make(types.FieldOptions, 0)
+	data = append(data, types.FieldOption{Text: selectedCity, Value: selectedCity})
+	for co, ciList := range t.cities {
+		if !utils.InArray(ciList, selectedCity) {
+			continue
+		}
+		cities := t.cities[co]
+		for _, ci := range cities {
+			if ci == selectedCity {
+				data = append(data, types.FieldOption{Value: selectedCity, Text: selectedCity, Selected: true})
+				continue
+			}
+			data = append(data, types.FieldOption{Value: ci, Text: ci})
+		}
+	}
+	return data
 }

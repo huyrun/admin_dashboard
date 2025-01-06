@@ -1,22 +1,17 @@
 package main
 
 import (
-	"io/ioutil"
+	_ "github.com/GoAdminGroup/themes/adminlte" // ui theme
+	_ "github.com/GoAdminGroup/themes/sword"
+	_ "github.com/huyrun/go-admin/adapter/gin"                 // web framework adapter
+	_ "github.com/huyrun/go-admin/modules/db/drivers/postgres" // sql driver
+	"io"
 	"log"
 	"os"
 	"os/signal"
+	"project/engine"
 
-	_ "github.com/GoAdminGroup/go-admin/adapter/gin"                 // web framework adapter
-	_ "github.com/GoAdminGroup/go-admin/modules/db/drivers/postgres" // sql driver
-	_ "github.com/GoAdminGroup/themes/sword"                         // ui theme
-
-	"github.com/GoAdminGroup/go-admin/engine"
-	"github.com/GoAdminGroup/go-admin/template"
-	"github.com/GoAdminGroup/go-admin/template/chartjs"
 	"github.com/gin-gonic/gin"
-
-	"project/models"
-	"project/pages"
 	"project/tables"
 )
 
@@ -26,34 +21,21 @@ func main() {
 
 func startServer() {
 	gin.SetMode(gin.ReleaseMode)
-	gin.DefaultWriter = ioutil.Discard
+	gin.DefaultWriter = io.Discard
 
-	r := gin.Default()
-
-	template.AddComp(chartjs.NewChart())
-
-	eng := engine.Default()
-
-	if err := eng.AddConfigFromYAML("./config.yml").
-		AddGenerators(tables.Generators).
-		Use(r); err != nil {
+	eng, err := engine.NewEngine(tables.NewGenerators)
+	if err != nil {
 		panic(err)
 	}
 
-	r.Static("/uploads", "./uploads")
-
-	eng.HTML("GET", "/admin", pages.GetDashBoard)
-	eng.HTMLFile("GET", "/admin/hello", "./html/hello.tmpl", map[string]interface{}{
-		"msg": "Hello world",
-	})
-
-	models.Init(eng.PostgresqlConnection())
-
-	_ = r.Run(":8000")
+	err = eng.R.Run(":8000")
+	if err != nil {
+		panic(err)
+	}
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt)
 	<-quit
 	log.Print("closing database connection")
-	eng.PostgresqlConnection().Close()
+	eng.E.PostgresqlConnection().Close()
 }

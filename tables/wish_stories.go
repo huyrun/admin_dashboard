@@ -1,10 +1,10 @@
 package tables
 
 import (
-	"github.com/GoAdminGroup/go-admin/context"
-	"github.com/GoAdminGroup/go-admin/modules/db"
-	"github.com/GoAdminGroup/go-admin/plugins/admin/modules/table"
-	"github.com/GoAdminGroup/go-admin/template/types/form"
+	"github.com/huyrun/go-admin/context"
+	"github.com/huyrun/go-admin/modules/db"
+	"github.com/huyrun/go-admin/plugins/admin/modules/table"
+	"github.com/huyrun/go-admin/template/types/form"
 )
 
 func GetWishstoriesTable(ctx *context.Context) table.Table {
@@ -20,7 +20,7 @@ func GetWishstoriesTable(ctx *context.Context) table.Table {
 	info.AddField("Image", "image", db.Varchar)
 	info.AddField("Status", "status", db.Varchar)
 
-	info.SetTable(tableName).SetTitle("Wishstories").SetDescription("Wishstories")
+	info.SetTable(tableName).SetTitle("Wishstories").SetDescription("Wishstories").AddCSS(cssTableNoWrap)
 
 	formList := wishStories.GetForm()
 	formList.AddField("Created_at", "created_at", db.Timestamptz, form.Datetime)

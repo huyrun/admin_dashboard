@@ -14,4 +14,4 @@ services:
     volumes:
       - ./init_data/admin.sql:/docker-entrypoint-initdb.d/admin.sql
       - ./init_data/create_wish_user.sql:/docker-entrypoint-initdb.d/create_wish_user.sql
-      - ./init_data/wishlist_struct.sql:/docker-entrypoint-initdb.d/wishlist_struct.sql
+      - ./init_data/wishlist.sql:/docker-entrypoint-initdb.d/wishlist.sql
