@@ -1,27 +1,26 @@
 package tables
 
 import (
-	"github.com/google/uuid"
+	"errors"
+	"fmt"
 	"github.com/huyrun/go-admin/context"
 	"github.com/huyrun/go-admin/modules/db"
 	form2 "github.com/huyrun/go-admin/plugins/admin/modules/form"
-	"github.com/huyrun/go-admin/plugins/admin/modules/parameter"
 	"github.com/huyrun/go-admin/plugins/admin/modules/table"
 	"github.com/huyrun/go-admin/template/types"
 	"github.com/huyrun/go-admin/template/types/form"
-	"gorm.io/gorm"
 	"time"
 )
 
 type Activity struct {
-	db   *gorm.DB
-	conn db.Connection
+	user   *User
+	entity *Entity
 }
 
-func NewActivityTable(db *gorm.DB, conn db.Connection) (*Activity, error) {
+func NewActivity(user *User, entity *Entity) (*Activity, error) {
 	return &Activity{
-		db:   db,
-		conn: conn,
+		user:   user,
+		entity: entity,
 	}, nil
 }
 
@@ -35,12 +34,7 @@ func (t *Activity) GetActivitiesTable(ctx *context.Context) table.Table {
 	info.AddField("Points", "points", db.Int).FieldSortable()
 	info.AddField("User ID", "user_id", db.UUID).FieldSortable().FieldFilterable().
 		FieldDisplay(func(value types.FieldModel) interface{} {
-			valueByte := []byte(value.Value)
-			u, err := uuid.FromBytes(valueByte)
-			if err != nil {
-				return linkToOtherTable("users", value.Value)
-			}
-			return linkToOtherTable("users", u.String())
+			return linkToOtherTable("users", value.Value)
 		})
 	info.AddField("Entity ID", "entity_id", db.Int8).FieldSortable().FieldFilterable().
 		FieldDisplay(func(value types.FieldModel) interface{} {
@@ -58,7 +52,7 @@ func (t *Activity) GetActivitiesTable(ctx *context.Context) table.Table {
 	info.SetTable(tableName).SetTitle("Activities").SetDescription("Activities").AddCSS(cssTableNoWrap)
 
 	formList := activities.GetForm()
-	formList.SetInsertFn(t.insert)
+	formList.SetPostValidator(t.postValidator)
 	formList.SetPreProcessFn(t.preProcess)
 	formList.AddField("ID", "id", db.Int8, form.Text).FieldDisableWhenCreate().FieldDisplayButCanNotEditWhenUpdate()
 	formList.AddField("Action", "action", db.Varchar, form.Text)
@@ -67,9 +61,6 @@ func (t *Activity) GetActivitiesTable(ctx *context.Context) table.Table {
 	formList.AddField("Entity ID", "entity_id", db.Int8, form.Text)
 
 	formList.SetTable(tableName).SetTitle("Activities").SetDescription("Activities").AddCSS(cssTableNoWrap)
-
-	activities.GetDetailFromInfo().SetTable(tableName).SetTitle("Activities").
-		SetDescription("Activities").SetGetDataFn(t.getDataDetail)
 
 	return activities
 }
@@ -82,40 +73,30 @@ func (t *Activity) preProcess(values form2.Values) form2.Values {
 	return values
 }
 
-func (t *Activity) insert(values form2.Values) error {
-	var m = make(map[string]interface{})
-	for k := range values {
-		v := values.Get(k)
-		if k == "user_id" {
-			u, err := uuid.Parse(v)
-			if err != nil {
-				return err
-			}
-			m["user_id"] = u[:]
-			continue
-		}
-		if (k != form2.PreviousKey && k != form2.TokenKey) && len(v) > 0 {
-			m[k] = v
-			continue
-		}
+func (t *Activity) postValidator(values form2.Values) error {
+	userID := values.Get("user_id")
+	if userID == "" {
+		return errors.New("user id is required")
 	}
-
-	if err := t.db.Table("activities").Create(m).Error; err != nil {
+	user, err := t.user.getByID(userID)
+	if err != nil {
 		return err
 	}
-	return nil
-}
-
-func (t *Activity) getDataDetail(param parameter.Parameters) ([]map[string]interface{}, int) {
-	id := param.GetFieldValue(parameter.PrimaryKey)
-	query := `select id, action, points, encode(user_id, 'hex')::uuid as user_id, entity_id, created_at
-from activities
-where id = ?
-order by id desc
-limit 1;`
-	res, err := t.conn.Query(query, id)
-	if err != nil {
-		return []map[string]interface{}{}, 0
+	if user == nil {
+		return fmt.Errorf("not found user %s", userID)
 	}
-	return res, 0
+
+	entityID := values.Get("entity_id")
+	if entityID == "" {
+		return errors.New("entity id is required")
+	}
+	entity, err := t.entity.getByID(entityID)
+	if err != nil {
+		return err
+	}
+	if entity == nil {
+		return fmt.Errorf("not found entity %s", entityID)
+	}
+
+	return nil
 }

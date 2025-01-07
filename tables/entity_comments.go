@@ -1,27 +1,27 @@
 package tables
 
 import (
+	"errors"
+	"fmt"
 	"github.com/google/uuid"
 	"github.com/huyrun/go-admin/context"
 	"github.com/huyrun/go-admin/modules/db"
 	form2 "github.com/huyrun/go-admin/plugins/admin/modules/form"
-	"github.com/huyrun/go-admin/plugins/admin/modules/parameter"
 	"github.com/huyrun/go-admin/plugins/admin/modules/table"
 	"github.com/huyrun/go-admin/template/types"
 	"github.com/huyrun/go-admin/template/types/form"
-	"gorm.io/gorm"
 	"time"
 )
 
 type EntityCommentsTable struct {
-	db   *gorm.DB
-	conn db.Connection
+	user   *User
+	entity *Entity
 }
 
-func NewEntityCommentsTable(db *gorm.DB, conn db.Connection) (*EntityCommentsTable, error) {
+func NewEntityComments(user *User, entity *Entity) (*EntityCommentsTable, error) {
 	return &EntityCommentsTable{
-		db:   db,
-		conn: conn,
+		user:   user,
+		entity: entity,
 	}, nil
 }
 
@@ -71,7 +71,7 @@ func (t *EntityCommentsTable) GetEntityCommentsTable(ctx *context.Context) table
 	info.SetTable(tableName).SetTitle("EntityComments").SetDescription("Entity Comments").AddCSS(cssTableNoWrap)
 
 	formList := entityComments.GetForm()
-	formList.SetInsertFn(t.insert)
+	formList.SetPostValidator(t.postValidator)
 	formList.SetPreProcessFn(t.preProcess)
 	formList.AddField("Comment No", "comment_no", db.Int8, form.Text).FieldDisableWhenCreate().FieldDisplayButCanNotEditWhenUpdate()
 	formList.AddField("Entity ID", "entity_id", db.Int8, form.Text)
@@ -80,20 +80,7 @@ func (t *EntityCommentsTable) GetEntityCommentsTable(ctx *context.Context) table
 
 	formList.SetTable(tableName).SetTitle("EntityComments").SetDescription("Entity Comments").AddCSS(cssTableNoWrap)
 
-	entityComments.GetDetailFromInfo().SetTable(tableName).SetTitle("EntityComments").
-		SetDescription("Entity Comments").SetGetDataFn(t.getDataDetail)
-
 	return entityComments
-}
-
-func (t *EntityCommentsTable) queryFilterFn(param parameter.Parameters, _ db.Connection) (ids []string, stopQuery bool) {
-	id := param.GetFieldValue("id")
-	u, err := uuid.Parse(id)
-	if err != nil {
-		return []string{}, false
-	}
-	uBytes := u[:]
-	return []string{string(uBytes)}, true
 }
 
 func (t *EntityCommentsTable) preProcess(values form2.Values) form2.Values {
@@ -107,40 +94,30 @@ func (t *EntityCommentsTable) preProcess(values form2.Values) form2.Values {
 	return values
 }
 
-func (t *EntityCommentsTable) insert(values form2.Values) error {
-	var m = make(map[string]interface{})
-	for k := range values {
-		v := values.Get(k)
-		if k == "user_id" {
-			u, err := uuid.Parse(v)
-			if err != nil {
-				return err
-			}
-			m["user_id"] = u[:]
-			continue
-		}
-		if (k != form2.PreviousKey && k != form2.TokenKey) && len(v) > 0 {
-			m[k] = v
-			continue
-		}
+func (t *EntityCommentsTable) postValidator(values form2.Values) error {
+	userID := values.Get("user_id")
+	if userID == "" {
+		return errors.New("user id is required")
 	}
-
-	if err := t.db.Table("entity_comments").Create(m).Error; err != nil {
+	user, err := t.user.getByID(userID)
+	if err != nil {
 		return err
 	}
-	return nil
-}
-
-func (t *EntityCommentsTable) getDataDetail(param parameter.Parameters) ([]map[string]interface{}, int) {
-	commentNo := param.GetFieldValue(parameter.PrimaryKey)
-	query := `select comment_no, entity_id, encode(user_id, 'hex')::uuid as user_id, comment, created_at, updated_at
-from entity_comments
-where comment_no = ?
-order by comment_no desc
-limit 1;`
-	res, err := t.conn.Query(query, commentNo)
-	if err != nil {
-		return []map[string]interface{}{}, 0
+	if user == nil {
+		return fmt.Errorf("not found user %s", userID)
 	}
-	return res, 0
+
+	entityID := values.Get("entity_id")
+	if entityID == "" {
+		return errors.New("user id is required")
+	}
+	entity, err := t.entity.getByID(entityID)
+	if err != nil {
+		return err
+	}
+	if entity == nil {
+		return fmt.Errorf("not found entity %s", entityID)
+	}
+
+	return nil
 }

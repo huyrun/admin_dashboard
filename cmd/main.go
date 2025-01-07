@@ -1,10 +1,9 @@
 package main
 
 import (
-	_ "github.com/GoAdminGroup/themes/adminlte" // ui theme
-	_ "github.com/GoAdminGroup/themes/sword"
 	_ "github.com/huyrun/go-admin/adapter/gin"                 // web framework adapter
 	_ "github.com/huyrun/go-admin/modules/db/drivers/postgres" // sql driver
+	_ "github.com/huyrun/themes/sword"
 	"io"
 	"log"
 	"os"

@@ -12,13 +12,13 @@ import (
 	"time"
 )
 
-func GetGoosedbversionTable(ctx *context.Context) table.Table {
+func GetGooseDbVersionTable(ctx *context.Context) table.Table {
 	gooseDbVersion := table.NewDefaultTable(ctx, table.DefaultConfigWithDriver("postgresql"))
 	tableName := "goose_db_version"
 	info := gooseDbVersion.GetInfo().SetFilterFormLayout(form.LayoutFilter)
 
-	info.AddField("ID", "id", db.Int4).FieldFilterable()
-	info.AddField("VersionID", "version_id", db.Int8).FieldFilterable()
+	info.AddField("ID", "id", db.Int8).FieldSortable().FieldFilterable()
+	info.AddField("VersionID", "version_id", db.Int8).FieldSortable().FieldFilterable()
 	info.AddField("IsApplied", "is_applied", db.Bool).
 		FieldFilterable(types.FilterType{FormType: form.SelectSingle}).FieldSortable().FieldFilterOptions(types.FieldOptions{
 		{Value: "true", Text: "Yes"},
@@ -43,10 +43,10 @@ func GetGoosedbversionTable(ctx *context.Context) table.Table {
 			return v.Format("2006-01-02 15:04:05")
 		})
 
-	info.SetTable(tableName).SetTitle("GooseDbVersion").SetDescription("Goose Db Version").AddCSS(cssTableNoWrap)
+	info.SetTable(tableName).SetTitle("GooseDbVersion").SetDescription("Goose DB Version").AddCSS(cssTableNoWrap)
 
 	formList := gooseDbVersion.GetForm()
-	formList.AddField("ID", "id", db.Int4, form.Default).FieldDisableWhenCreate().FieldDisplayButCanNotEditWhenUpdate()
+	formList.AddField("ID", "id", db.Int8, form.Default).FieldDisableWhenCreate().FieldDisplayButCanNotEditWhenUpdate()
 	formList.AddField("VersionID", "version_id", db.Int8, form.Text)
 	formList.AddField("IsApplied", "is_applied", db.Bool, form.Radio).
 		FieldOptions(types.FieldOptions{
@@ -58,7 +58,7 @@ func GetGoosedbversionTable(ctx *context.Context) table.Table {
 		return values
 	})
 
-	formList.SetTable(tableName).SetTitle("GooseDbVersion").SetDescription("Goose Db Version")
+	formList.SetTable(tableName).SetTitle("GooseDbVersion").SetDescription("Goose DB Version")
 
 	return gooseDbVersion
 }

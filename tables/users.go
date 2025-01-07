@@ -1,7 +1,6 @@
 package tables
 
 import (
-	"encoding/hex"
 	"errors"
 	"fmt"
 	"github.com/google/uuid"
@@ -9,7 +8,6 @@ import (
 	"github.com/huyrun/go-admin/modules/db"
 	"github.com/huyrun/go-admin/modules/utils"
 	form2 "github.com/huyrun/go-admin/plugins/admin/modules/form"
-	"github.com/huyrun/go-admin/plugins/admin/modules/parameter"
 	"github.com/huyrun/go-admin/plugins/admin/modules/table"
 	"github.com/huyrun/go-admin/template/color"
 	"github.com/huyrun/go-admin/template/types"
@@ -17,6 +15,7 @@ import (
 	"gopkg.in/yaml.v3"
 	"gorm.io/gorm"
 	"project/embed"
+	"strconv"
 	"time"
 )
 
@@ -25,7 +24,6 @@ type User struct {
 	conn       db.Connection
 	countries  []*Country
 	countryMap map[string]*Country
-	cities     map[string][]string
 }
 
 type Country struct {
@@ -33,7 +31,10 @@ type Country struct {
 	Code string `json:"code" yaml:"code"`
 }
 
-func NewUserTable(db *gorm.DB, conn db.Connection) (*User, error) {
+var userFields = []string{"username", "first_name", "last_name", "email", "role", "password_hash", "age", "dob", "sex",
+	"country", "city", "points", "avatar_url", "google_sub", "fb_id", "status"}
+
+func NewUser(db *gorm.DB, conn db.Connection) (*User, error) {
 	var countries []*Country
 	err := yaml.Unmarshal(embed.CountriesData, &countries)
 	if err != nil {
@@ -45,18 +46,11 @@ func NewUserTable(db *gorm.DB, conn db.Connection) (*User, error) {
 		countryMap[c.Code] = c
 	}
 
-	var cities map[string][]string
-	err = yaml.Unmarshal(embed.CitiesData, &cities)
-	if err != nil {
-		return nil, err
-	}
-
 	return &User{
 		db:         db,
 		conn:       conn,
 		countries:  countries,
 		countryMap: countryMap,
-		cities:     cities,
 	}, nil
 }
 
@@ -70,20 +64,7 @@ func (t *User) GetUsersTable(ctx *context.Context) table.Table {
 	tableName := "users"
 	info := users.GetInfo().SetFilterFormLayout(form.LayoutFilter).SetSortField("created_at")
 
-	info.SetQueryFilterFn(t.queryFilterFn)
-	info.SetDeleteFn(t.deleteFn)
-	info.AddField("ID", "id", db.UUID).FieldSortable().FieldFilterable().
-		FieldDisplay(func(value types.FieldModel) interface{} {
-			valueByte := []byte(value.Value)
-			if len(valueByte) != 16 {
-				return value.Value
-			}
-			u, err := uuid.FromBytes(valueByte)
-			if err != nil {
-				return value.Value
-			}
-			return u.String()
-		})
+	info.AddField("ID", "id", db.UUID).FieldSortable().FieldFilterable()
 	info.AddField("User Name", "username", db.Varchar).FieldSortable()
 	info.AddField("First Name", "first_name", db.Varchar).FieldSortable().FieldFilterable()
 	info.AddField("Last Name", "last_name", db.Varchar).FieldSortable().FieldFilterable()
@@ -140,7 +121,7 @@ func (t *User) GetUsersTable(ctx *context.Context) table.Table {
 				return fmt.Sprintf(`<span class="label" style="background-color: %s; color: %s;">Inactive</span>`, color.Gray, color.White)
 			}
 			if value.Value == "1" {
-				return fmt.Sprintf(`<span class="label" style="background-color: %s;  color: %s;">Active</span>`, color.RoyalBlue, color.White)
+				return fmt.Sprintf(`<span class="label" style="background-color: %s;  color: %s;">Active</span>`, color.Yellow, color.Black)
 			}
 			return fmt.Sprintf(`<span class="label" style="text-decoration: line-through; background-color: %s; color: %s;">Unknown</span>`, color.Red, color.Black)
 		})
@@ -179,22 +160,6 @@ func (t *User) GetUsersTable(ctx *context.Context) table.Table {
 			{Text: "👨 Men", Value: "0"},
 			{Text: "👩 Women", Value: "1"},
 		}).FieldDefault("0")
-	//formList.AddField("Country", "country", db.Varchar, form.SelectSingle).
-	//	FieldInputWidth(4).FieldOptions(t.countryList()).
-	//	FieldOnChooseAjax("city", "/choose/country",
-	//		func(ctx *context.Context) (bool, string, interface{}) {
-	//			country := ctx.FormValue("value")
-	//			var data = make(selection.Options, 0)
-	//			cities := t.cities[country]
-	//			for _, city := range cities {
-	//				data = append(data, selection.Option{Text: city, ID: city})
-	//			}
-	//			return true, "ok", data
-	//		})
-	//formList.AddField("City", "city", db.Varchar, form.SelectSingle).FieldInputWidth(3).
-	//	FieldOptionInitFn(func(val types.FieldModel) types.FieldOptions {
-	//		return t.citiesBySelectedCity(val.Value)
-	//	})
 	formList.AddField("Country", "country", db.Varchar, form.SelectSingle).
 		FieldInputWidth(4).FieldOptions(t.countryList())
 	formList.AddField("City", "city", db.Varchar, form.Text).FieldInputWidth(4)
@@ -210,21 +175,12 @@ func (t *User) GetUsersTable(ctx *context.Context) table.Table {
 
 	formList.SetTable(tableName).SetTitle("Users").SetDescription("Users")
 
-	users.GetDetailFromInfo().SetTable("user").SetTitle("Users").SetDescription("Users").SetGetDataFn(t.getDataDetail)
-
 	return users
 }
 
 func (t *User) preProcess(values form2.Values) form2.Values {
 	switch values.Get(form2.PostTypeKey) {
 	case "0": // update
-		id := values.Get("id")
-		u, err := uuid.Parse(id)
-		if err != nil {
-			return values
-		}
-		uBytes := u[:]
-		values.Add("id", string(uBytes))
 		values.Add("updated_at", time.Now().Format(time.RFC3339))
 	case "1": // create
 		values.Add("created_at", time.Now().Format(time.RFC3339))
@@ -237,65 +193,14 @@ func (t *User) insert(values form2.Values) error {
 	var m = make(map[string]interface{})
 	for k := range values {
 		v := values.Get(k)
-		if (k != form2.PreviousKey && k != form2.TokenKey) && len(v) > 0 {
+		if utils.InArray(userFields, k) && len(v) > 0 {
 			m[k] = v
 		}
 	}
 
-	id, _ := uuid.New().MarshalBinary()
-	m["id"] = id
+	m["id"] = uuid.New()
 	if err := t.db.Table("users").Create(m).Error; err != nil {
 		return err
-	}
-	return nil
-}
-
-func (t *User) getDataDetail(param parameter.Parameters) ([]map[string]interface{}, int) {
-	id := param.GetFieldValue(parameter.PrimaryKey)
-	u, err := uuid.Parse(id)
-	if err != nil {
-		return []map[string]interface{}{}, 0
-	}
-	query := `select encode(id, 'hex')::uuid as id, username, first_name, last_name, email, role, password_hash, 
-       age, dob,sex, country, city, points, avatar_url, google_sub, fb_id, status, created_at, updated_at
-from users
-where id = decode(?, 'hex')
-order by id desc
-limit 1;`
-	res, err := t.conn.Query(query, hex.EncodeToString(u[:]))
-	if err != nil {
-		return []map[string]interface{}{}, 0
-	}
-	return res, 0
-}
-
-func (t *User) queryFilterFn(param parameter.Parameters, _ db.Connection) (ids []string, stopQuery bool) {
-	id := param.GetFieldValue("id")
-	u, err := uuid.Parse(id)
-	if err != nil {
-		return []string{}, false
-	}
-	uBytes := u[:]
-	return []string{string(uBytes)}, true
-}
-
-func (t *User) deleteFn(ids []string) error {
-	var convertedIDs []string
-	for _, id := range ids {
-		u, err := uuid.Parse(id)
-		if err != nil {
-			continue
-		}
-		uBytes := u[:]
-		convertedIDs = append(convertedIDs, string(uBytes))
-	}
-
-	result := t.db.Table("users").Where("id IN ?", convertedIDs).Delete(nil)
-	if result.Error != nil {
-		return result.Error
-	}
-	if result.RowsAffected == 0 {
-		return errors.New("no record found to delete")
 	}
 	return nil
 }
@@ -308,21 +213,41 @@ func (t *User) countryList() types.FieldOptions {
 	return fieldOptions
 }
 
-func (t *User) citiesBySelectedCity(selectedCity string) types.FieldOptions {
-	data := make(types.FieldOptions, 0)
-	data = append(data, types.FieldOption{Text: selectedCity, Value: selectedCity})
-	for co, ciList := range t.cities {
-		if !utils.InArray(ciList, selectedCity) {
-			continue
-		}
-		cities := t.cities[co]
-		for _, ci := range cities {
-			if ci == selectedCity {
-				data = append(data, types.FieldOption{Value: selectedCity, Text: selectedCity, Selected: true})
-				continue
-			}
-			data = append(data, types.FieldOption{Value: ci, Text: ci})
-		}
+func (t *User) getByID(id string) (map[string]interface{}, error) {
+	query := `select id, username, first_name, last_name, email, role, password_hash, 
+       age, dob ,sex , country , city, points, avatar_url, google_sub, fb_id, status, created_at, updated_at
+from users
+where id = ?
+order by id desc
+limit 1;`
+	res, err := t.conn.Query(query, id)
+	if err != nil {
+		return map[string]interface{}{}, err
 	}
-	return data
+	if len(res) == 0 {
+		return nil, nil
+	}
+	return res[0], nil
+}
+
+func (t *User) postValidator(values form2.Values) error {
+	pointsStr := values.Get("points")
+	points, err := strconv.Atoi(pointsStr)
+	if err != nil {
+		return err
+	}
+	if points < 0 {
+		return errors.New("points must be greater than zero")
+	}
+
+	ageStr := values.Get("age")
+	age, err := strconv.Atoi(ageStr)
+	if err != nil {
+		return err
+	}
+	if age < 0 {
+		return errors.New("age must be greater than zero")
+	}
+
+	return nil
 }

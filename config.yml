@@ -11,7 +11,7 @@ database:
 app_id: Wt7uHgL7gBd6
 language: en
 prefix: admin
-theme: adminlte
+theme: sword
 store:
   path: ./uploads
   prefix: uploads

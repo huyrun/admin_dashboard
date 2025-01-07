@@ -11,6 +11,20 @@ import (
 	"project/utils"
 )
 
+var (
+	cssTableNoWrap = template.CSS(`table{white-space: nowrap;}`)
+)
+
+func linkToOtherTable(tableName, value string) template.HTML {
+	return template2.Default().
+		Link().
+		SetURL(fmt.Sprintf("/admin/info/%s/detail?__goadmin_detail_pk=%s", tableName, value)).
+		SetContent(template.HTML(value)).
+		OpenInNewTab().
+		SetTabTitle(template.HTML(fmt.Sprintf("%s Detail(%s)", utils.CapitalizeFirst(tableName), value))).
+		GetContent()
+}
+
 // Generators is a map of table models.
 //
 // The key of Generators is the prefix of table info url.
@@ -36,60 +50,70 @@ import (
 //
 // example end
 func NewGenerators(db *gorm.DB, conn db.Connection) (map[string]table.Generator, error) {
-	userTable, err := NewUserTable(db, conn)
+	user, err := NewUser(db, conn)
 	if err != nil {
 		return nil, err
 	}
-	activityTable, err := NewActivityTable(db, conn)
+	entity, err := NewEntity(db, conn)
 	if err != nil {
 		return nil, err
 	}
-	entityCommentsTable, err := NewEntityCommentsTable(db, conn)
+	activity, err := NewActivity(user, entity)
 	if err != nil {
 		return nil, err
 	}
-	likedEntitiesTable, err := NewLikedEntitiesTable(db, conn)
+	entityComments, err := NewEntityComments(user, entity)
 	if err != nil {
 		return nil, err
 	}
-	savedEntitiesTable, err := NewSavedEntitiesTable(db, conn)
+	likedEntities, err := NewLikedEntities(user, entity)
 	if err != nil {
 		return nil, err
 	}
-	userRelationshipsTable, err := NewUserRelationshipsTable(db, conn)
+	savedEntities, err := NewSavedEntities(user, entity)
+	if err != nil {
+		return nil, err
+	}
+	userRelationships, err := NewUserRelationships(user, entity)
+	if err != nil {
+		return nil, err
+	}
+	tag, err := NewTag(db, conn)
+	if err != nil {
+		return nil, err
+	}
+	entityTag, err := NewEntityTags(entity, tag)
+	if err != nil {
+		return nil, err
+	}
+	category, err := NewCategory(db, conn)
+	if err != nil {
+		return nil, err
+	}
+	wishStory, err := NewWishStory()
+	if err != nil {
+		return nil, err
+	}
+	wish, err := NewWish(user, entity, category)
 	if err != nil {
 		return nil, err
 	}
 
 	return map[string]table.Generator{
-		"entity_comments":    entityCommentsTable.GetEntityCommentsTable,
-		"entity_tags":        GetEntitytagsTable,
-		"categories":         GetCategoriesTable,
-		"entities":           GetEntitiesTable,
-		"activities":         activityTable.GetActivitiesTable,
-		"goose_db_version":   GetGoosedbversionTable,
-		"liked_entities":     likedEntitiesTable.GetLikedEntitiesTable,
-		"user_relationships": userRelationshipsTable.GetUserRelationshipsTable,
-		"saved_entities":     savedEntitiesTable.GetSavedEntitiesTable,
-		"wishes":             GetWishesTable,
-		"wish_stories":       GetWishstoriesTable,
-		"tags":               GetTagsTable,
-		"users":              userTable.GetUsersTable,
+		"entity_comments":    entityComments.GetEntityCommentsTable,
+		"entity_tags":        entityTag.GetEntityTagTable,
+		"categories":         category.GetCategoriesTable,
+		"entities":           entity.GetEntitiesTable,
+		"activities":         activity.GetActivitiesTable,
+		"goose_db_version":   GetGooseDbVersionTable,
+		"liked_entities":     likedEntities.GetLikedEntitiesTable,
+		"user_relationships": userRelationships.GetUserRelationshipsTable,
+		"saved_entities":     savedEntities.GetSavedEntitiesTable,
+		"wishes":             wish.GetWishTable,
+		"wish_stories":       wishStory.GetWishStoryTable,
+		"tags":               tag.GetTagsTable,
+		"users":              user.GetUsersTable,
 
 		// generators end
 	}, nil
-}
-
-var (
-	cssTableNoWrap = template.CSS(`table{white-space: nowrap;}`)
-)
-
-func linkToOtherTable(tableName, value string) template.HTML {
-	return template2.Default().
-		Link().
-		SetURL(fmt.Sprintf("/admin/info/%s/detail?__goadmin_detail_pk=%s", tableName, value)).
-		SetContent(template.HTML(value)).
-		OpenInNewTab().
-		SetTabTitle(template.HTML(fmt.Sprintf("%s Detail(%s)", utils.CapitalizeFirst(tableName), value))).
-		GetContent()
 }
