@@ -5,7 +5,7 @@ go 1.23.4
 require (
 	github.com/gin-gonic/gin v1.10.0
 	github.com/google/uuid v1.6.0
-	github.com/huyrun/go-admin v1.0.1
+	github.com/huyrun/go-admin v1.0.2
 	github.com/huyrun/themes v1.0.0
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/driver/postgres v1.5.11

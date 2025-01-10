@@ -15,7 +15,13 @@ prefix: {{ default "admin" .Env.PREFIX }}
 theme: {{ default "sword" .Env.THEME }}
 title: {{ default "Admin Dashboard" .Env.TITLE }}
 logo: {{ default "Admin Dashboard" .Env.LOGO }}
-mini_logo: {{ default "GA" .Env.MINI_LOGO }}
+mini_logo: {{ default "AD" .Env.MINI_LOGO }}
 index: {{ default "/" .Env.INDEX }}
-login_url: {{ default "/login" .Env.LOGIN_URL }}
+login_url: {{ default "Admin Dashboard" .Env.LOGIN_URL }}
+login_title: {{ default "Admin Dashboard" .Env.LOGIN_TITLE }}
 session_life_time: {{ default "7200" .Env.SESSION_LIFE_TIME }}
+access_assets_log_off: {{ default "true" .Env.ACCESS_ASSETS_LOG_OFF }}
+sql_log: {{ default "true" .Env.SQL_LOG }}
+access_log_off: {{ default "true" .Env.ACCESS_LOG_OFF }}
+info_log_off: {{ default "true" .Env.INFO_LOG_OFF }}
+error_log_off: {{ default "true" .Env.ERROR_LOG_OFF }}
