@@ -26,7 +26,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./init_data/admin.sql:/docker-entrypoint-initdb.d/admin.sql
+#      - ./init_data/admin.sql:/docker-entrypoint-initdb.d/admin.sql
       - ./init_data/create_wish_user.sql:/docker-entrypoint-initdb.d/create_wish_user.sql
       - ./init_data/wishlist.sql:/docker-entrypoint-initdb.d/wishlist.sql
     healthcheck:

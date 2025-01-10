@@ -27,7 +27,7 @@ func startServer() {
 		panic(err)
 	}
 
-	err = eng.R.Run(":8000")
+	err = eng.R.Run(eng.Config.ServerAddress)
 	if err != nil {
 		panic(err)
 	}
