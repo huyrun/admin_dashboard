@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/huyrun/admin_dashboard/engine"
 	_ "github.com/huyrun/go-admin/adapter/gin"                 // web framework adapter
 	_ "github.com/huyrun/go-admin/modules/db/drivers/postgres" // sql driver
 	_ "github.com/huyrun/themes/sword"
@@ -8,10 +9,9 @@ import (
 	"log"
 	"os"
 	"os/signal"
-	"project/engine"
 
 	"github.com/gin-gonic/gin"
-	"project/tables"
+	"github.com/huyrun/admin_dashboard/tables"
 )
 
 func main() {

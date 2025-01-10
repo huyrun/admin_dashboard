@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/google/uuid"
+	"github.com/huyrun/admin_dashboard/embed"
 	"github.com/huyrun/go-admin/context"
 	"github.com/huyrun/go-admin/modules/db"
 	"github.com/huyrun/go-admin/modules/utils"
@@ -14,7 +15,6 @@ import (
 	"github.com/huyrun/go-admin/template/types/form"
 	"gopkg.in/yaml.v3"
 	"gorm.io/gorm"
-	"project/embed"
 	"strconv"
 	"time"
 )
