@@ -1,25 +1,30 @@
-# ADMIN DASHBOARD
+# Admin Dashboard
 
-This repository contains the source code and setup for the **Admin Dashboard** application. The application is containerized using Docker and can be easily deployed using `docker-compose`.
+This repository contains the source code for the Admin Dashboard application, designed for managing administrative tasks with an intuitive interface. The app is containerized using Docker, providing easy setup and deployment.
 
 ## Features
-
-- Simple setup and deployment using Docker.
-- Pre-configured PostgreSQL database.
-- Scalable and extensible architecture.
+- Simple deployment with Docker Compose
+- Pre-configured PostgreSQL database
+- Scalable and extensible architecture
 
 ## Prerequisites
-
-Before starting, ensure you have the following installed on your machine:
-
-- [Docker](https://docs.docker.com/get-docker/)
-- [Docker Compose](https://docs.docker.com/compose/install/)
+Ensure the following tools are installed:
+- [Docker](https://docs.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
 
 ## Getting Started
 
-To start the application, follow these steps:
+To run the application locally:
 
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/huyrun/project.git
-   cd project
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/huyrun/admin_dashboard.git
+    cd admin_dashboard
+    ```
+
+2. Start the app with Docker Compose:
+    ```bash
+    docker-compose -f docker/docker-compose.yml up --build -d
+    ```
+
+This will build and start the application in detached mode.
