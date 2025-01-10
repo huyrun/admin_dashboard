@@ -23,16 +23,6 @@ build:
 generate:
 	$(CLI) generate -c adm.ini
 
-test: black-box-test user-acceptance-test
-
-black-box-test: ready-for-data
-	$(GOTEST) -v -test.run=TestMainBlackBox
-	make clean
-
-user-acceptance-test: ready-for-data
-	$(GOTEST) -v -test.run=TestMainUserAcceptance
-	make clean
-
 ready-for-data:
 	cp admin.db admin_test.db
 

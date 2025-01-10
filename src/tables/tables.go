@@ -3,7 +3,7 @@ package tables
 
 import (
 	"fmt"
-	"github.com/huyrun/admin_dashboard/utils"
+	"github.com/huyrun/admin_dashboard/src/utils"
 	"github.com/huyrun/go-admin/modules/db"
 	"github.com/huyrun/go-admin/plugins/admin/modules/table"
 	template2 "github.com/huyrun/go-admin/template"
