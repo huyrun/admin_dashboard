@@ -5,9 +5,12 @@ import (
 	"github.com/huyrun/go-admin/engine"
 	"github.com/huyrun/go-admin/modules/db"
 	"github.com/huyrun/go-admin/plugins/admin/modules/table"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"project/models"
-	"project/pages"
+)
+
+const (
+	configFile = "etc/config/config.yml"
 )
 
 type Engine struct {
@@ -21,15 +24,13 @@ func NewEngine(generatorFn func(db *gorm.DB, conn db.Connection) (map[string]tab
 	e := engine.Default()
 	r := NewRouter()
 
-	if err := e.AddConfigFromYAML("./config.yml").
+	if err := e.AddConfigFromYAML(configFile).
 		Use(r); err != nil {
 		return nil, err
 	}
 
-	e.HTML("GET", "/admin", pages.GetWelcome)
-
 	conn := e.PostgresqlConnection()
-	gormDB, err := models.NewDB(conn)
+	gormDB, err := gorm.Open(postgres.New(postgres.Config{Conn: conn.GetDB("default")}), &gorm.Config{})
 	if err != nil {
 		return nil, err
 	}

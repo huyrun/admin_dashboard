@@ -11,7 +11,11 @@ func NewRouter() *gin.Engine {
 	r.Static("/static", "./public")
 
 	r.GET("/", func(ctx *gin.Context) {
-		ctx.Redirect(http.StatusMovedPermanently, "/admin")
+		ctx.Redirect(http.StatusMovedPermanently, "/admin/menu")
+	})
+
+	r.GET("/admin", func(ctx *gin.Context) {
+		ctx.Redirect(http.StatusMovedPermanently, "/admin/menu")
 	})
 
 	return r

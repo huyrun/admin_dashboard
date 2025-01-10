@@ -1,0 +1,21 @@
+env: {{ default "production" .Env.ENV }}
+database:
+  default:
+    driver: {{ default "postgresql" .Env.DB_DRIVER }}
+    host: {{ default "127.0.0.1" .Env.DB_HOST }}
+    port: {{ default "5432" .Env.DB_PORT }}
+    user: {{ default "postgres" .Env.DB_USER }}
+    pwd: {{ default "postgres" .Env.DB_PASSWORD }}
+    name: {{ default "postgres" .Env.DB_NAME }}
+    max_idle_con: {{ default "5" .Env.DB_MAX_IDLE_CON }}
+    max_open_con: {{ default "10" .Env.DB_MAX_OPEN_CON }}
+app_id: {{ default "Wt7uHgL7gBd6" .Env.APP_ID }}
+language: {{ default "en" .Env.LANGUAGE }}
+prefix: {{ default "admin" .Env.PREFIX }}
+theme: {{ default "sword" .Env.THEME }}
+title: {{ default "Admin Dashboard" .Env.TITLE }}
+logo: {{ default "Admin Dashboard" .Env.LOGO }}
+mini_logo: {{ default "GA" .Env.MINI_LOGO }}
+index: {{ default "/" .Env.INDEX }}
+login_url: {{ default "/login" .Env.LOGIN_URL }}
+session_life_time: {{ default "7200" .Env.SESSION_LIFE_TIME }}

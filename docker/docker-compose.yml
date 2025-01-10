@@ -1,6 +1,20 @@
 version: '3.9'
 
 services:
+  app:
+    container_name: admin_dashboard
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    env_file: .test.env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../output:/src/output
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   postgres:
     image: postgres:15-alpine
     container_name: postgres_container
@@ -15,3 +29,8 @@ services:
       - ./init_data/admin.sql:/docker-entrypoint-initdb.d/admin.sql
       - ./init_data/create_wish_user.sql:/docker-entrypoint-initdb.d/create_wish_user.sql
       - ./init_data/wishlist.sql:/docker-entrypoint-initdb.d/wishlist.sql
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-d", "postgres", "-U", "postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5

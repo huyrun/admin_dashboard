@@ -1,0 +1,21 @@
+env: production
+database:
+  default:
+    driver: postgresql
+    host: 127.0.0.1
+    port: 5432
+    user: postgres
+    pwd: postgres
+    name: postgres
+    max_idle_con: 5
+    max_open_con: 10
+app_id: Wt7uHgL7gBd6
+language: en
+prefix: admin
+theme: sword
+title: Admin Dashboard
+logo: Admin Dashboard
+mini_logo: GA
+index: /
+login_url: /login
+session_life_time: 7200
