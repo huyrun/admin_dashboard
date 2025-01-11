@@ -21,8 +21,8 @@ index: /
 login_url: Admin Dashboard
 login_title: Admin Dashboard
 session_life_time: 7200
-access_assets_log_off: true
+access_assets_log_off: false
 sql_log: true
-access_log_off: true
-info_log_off: true
-error_log_off: true
+access_log_off: false
+info_log_off: false
+error_log_off: false
