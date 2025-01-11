@@ -10,6 +10,7 @@ import (
 	"github.com/huyrun/go-admin/modules/utils"
 	form2 "github.com/huyrun/go-admin/plugins/admin/modules/form"
 	"github.com/huyrun/go-admin/plugins/admin/modules/table"
+	"github.com/huyrun/go-admin/template"
 	"github.com/huyrun/go-admin/template/color"
 	"github.com/huyrun/go-admin/template/types"
 	"github.com/huyrun/go-admin/template/types/form"
@@ -101,13 +102,7 @@ func (t *User) GetUsersTable(ctx *context.Context) table.Table {
 	info.AddField("Points", "points", db.Int).FieldSortable()
 	info.AddField("Avatar URL", "avatar_url", db.Varchar).
 		FieldDisplay(func(value types.FieldModel) interface{} {
-			url := value.Value
-			display := url
-			if len(url) > 60 {
-				display = url[0:57] + "..."
-			}
-			return fmt.Sprintf(`<a target="_blank" href="%s">%s</a>`, url, display)
-
+			return template.Default().Image().WithModal().SetSrc(template.HTML(value.Value)).GetContent()
 		})
 	info.AddField("Google Sub", "google_sub", db.Varchar)
 	info.AddField("FbID", "fb_id", db.Varchar)

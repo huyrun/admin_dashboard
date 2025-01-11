@@ -285,18 +285,18 @@ ALTER TABLE goadmin_users OWNER TO postgres;
 
 INSERT INTO goadmin_menu (id, parent_id, type, "order", title, plugin_name, header, icon, uri, created_at, updated_at)
 VALUES
-    (1, 0, 1, 2, 'Admin', '', NULL, 'fa-tasks', '', '2019-09-10 00:00:00', '2019-09-10 00:00:00'),
-    (2, 1, 1, 2, 'Users', '', NULL, 'fa-users', '/info/manager', '2019-09-10 00:00:00', '2019-09-10 00:00:00'),
-    (3, 1, 1, 3, 'Roles', '', NULL, 'fa-user', '/info/roles', '2019-09-10 00:00:00', '2019-09-10 00:00:00'),
-    (4, 1, 1, 4, 'Permission', '', NULL, 'fa-ban', '/info/permission', '2019-09-10 00:00:00', '2019-09-10 00:00:00'),
-    (5, 1, 1, 5, 'Menu', '', NULL, 'fa-bars', '/menu', '2019-09-10 00:00:00', '2019-09-10 00:00:00'),
-    (6, 1, 1, 6, 'Operation log', '', NULL, 'fa-history', '/info/op', '2019-09-10 00:00:00', '2019-09-10 00:00:00'),
-    (7, 0, 1, 1, 'Dashboard', '', NULL, 'fa-bar-chart', '/', '2019-09-10 00:00:00', '2019-09-10 00:00:00');
+    (1, 0, 1, 2, 'Admin', '', NULL, 'fa-tasks', '', now(), now()),
+    (2, 1, 1, 2, 'Users', '', NULL, 'fa-users', '/info/manager', now(), now()),
+    (3, 1, 1, 3, 'Roles', '', NULL, 'fa-user', '/info/roles', now(), now()),
+    (4, 1, 1, 4, 'Permission', '', NULL, 'fa-ban', '/info/permission', now(), now()),
+    (5, 1, 1, 5, 'Menu', '', NULL, 'fa-bars', '/menu', now(), now()),
+    (6, 1, 1, 6, 'Operation log', '', NULL, 'fa-history', '/info/op', now(), now()),
+    (7, 0, 1, 1, 'Dashboard', '', NULL, 'fa-bar-chart', '/', now(), now());
 
 INSERT INTO goadmin_permissions (id, name, slug, http_method, http_path, created_at, updated_at)
 VALUES
-    (1, 'All permission', '*', '*', '', '2019-09-10 00:00:00', '2019-09-10 00:00:00'),
-    (2, 'Dashboard', 'dashboard', 'GET,PUT,POST,DELETE', '/', '2019-09-10 00:00:00', '2019-09-10 00:00:00');
+    (1, 'All permission', '*', '', '*', now(), now()),
+    (2, 'Dashboard', 'dashboard', 'GET,PUT,POST,DELETE', '/', now(), now());
 
 
 --
@@ -305,9 +305,9 @@ VALUES
 
 INSERT INTO goadmin_role_menu (role_id, menu_id, created_at, updated_at)
 VALUES
-    (1, 1, '2019-09-10 00:00:00', '2019-09-10 00:00:00'),
-    (1, 7, '2019-09-10 00:00:00', '2019-09-10 00:00:00'),
-    (2, 7, '2019-09-10 00:00:00', '2019-09-10 00:00:00');
+    (1, 1, now(), now()),
+    (1, 7, now(), now()),
+    (2, 7, now(), now());
 
 
 --
@@ -316,26 +316,9 @@ VALUES
 
 INSERT INTO goadmin_role_permissions (role_id, permission_id, created_at, updated_at)
 VALUES
-    (1, 1, '2019-09-10 00:00:00', '2019-09-10 00:00:00'),
-    (1, 2, '2019-09-10 00:00:00', '2019-09-10 00:00:00'),
-    (2, 2, '2019-09-10 00:00:00', '2019-09-10 00:00:00'),
-    (0, 3, NULL, NULL),
-    (0, 3, NULL, NULL),
-    (0, 3, NULL, NULL),
-    (0, 3, NULL, NULL),
-    (0, 3, NULL, NULL),
-    (0, 3, NULL, NULL),
-    (0, 3, NULL, NULL),
-    (0, 3, NULL, NULL),
-    (0, 3, NULL, NULL),
-    (0, 3, NULL, NULL),
-    (0, 3, NULL, NULL),
-    (0, 3, NULL, NULL),
-    (0, 3, NULL, NULL),
-    (0, 3, NULL, NULL),
-    (0, 3, NULL, NULL),
-    (0, 3, NULL, NULL),
-    (0, 3, NULL, NULL);
+    (1, 1, now(), now()),
+    (1, 2, now(), now()),
+    (2, 2, now(), now());
 
 
 --
@@ -344,8 +327,8 @@ VALUES
 
 INSERT INTO goadmin_role_users (role_id, user_id, created_at, updated_at)
 VALUES
-    (1, 1, '2019-09-10 00:00:00', '2019-09-10 00:00:00'),
-    (2, 2, '2019-09-10 00:00:00', '2019-09-10 00:00:00');
+    (1, 1, now(), now()),
+    (2, 2, now(), now());
 
 
 --
@@ -354,8 +337,8 @@ VALUES
 
 INSERT INTO goadmin_roles (id, name, slug, created_at, updated_at)
 VALUES
-    (1, 'Administrator', 'administrator', '2019-09-10 00:00:00', '2019-09-10 00:00:00'),
-    (2, 'Operator', 'operator', '2019-09-10 00:00:00', '2019-09-10 00:00:00');
+    (1, 'Administrator', 'administrator', now(), now()),
+    (2, 'Operator', 'operator', now(), now());
 
 --
 -- Data for Name: goadmin_user_permissions; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -363,25 +346,8 @@ VALUES
 
 INSERT INTO goadmin_user_permissions (user_id, permission_id, created_at, updated_at)
 VALUES
-    (1, 1, '2019-09-10 00:00:00', '2019-09-10 00:00:00'),
-    (2, 2, '2019-09-10 00:00:00', '2019-09-10 00:00:00'),
-    (0, 1, NULL, NULL),
-    (0, 1, NULL, NULL),
-    (0, 1, NULL, NULL),
-    (0, 1, NULL, NULL),
-    (0, 1, NULL, NULL),
-    (0, 1, NULL, NULL),
-    (0, 1, NULL, NULL),
-    (0, 1, NULL, NULL),
-    (0, 1, NULL, NULL),
-    (0, 1, NULL, NULL),
-    (0, 1, NULL, NULL),
-    (0, 1, NULL, NULL),
-    (0, 1, NULL, NULL),
-    (0, 1, NULL, NULL),
-    (0, 1, NULL, NULL),
-    (0, 1, NULL, NULL),
-    (0, 1, NULL, NULL);
+    (1, 1, now(), now()),
+    (2, 2, now(), now());
 
 --
 -- Data for Name: goadmin_users; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -389,8 +355,8 @@ VALUES
 
 INSERT INTO goadmin_users (id, username, password, name, avatar, remember_token, created_at, updated_at)
 VALUES
-    (1, 'admin', '$2a$10$OxWYJJGTP2gi00l2x06QuOWqw5VR47MQCJ0vNKnbMYfrutij10Hwe', 'admin', NULL, 'tlNcBVK9AvfYH7WEnwB1RKvocJu8FfRy4um3DJtwdHuJy0dwFsLOgAc0xUfh', '2019-09-10 00:00:00', '2019-09-10 00:00:00'),
-    (2, 'operator', '$2a$10$rVqkOzHjN2MdlEprRflb1eGP0oZXuSrbJLOmJagFsCd81YZm0bsh.', 'Operator', NULL, NULL, '2019-09-10 00:00:00', '2019-09-10 00:00:00');
+    (1, 'admin', '$2a$10$OxWYJJGTP2gi00l2x06QuOWqw5VR47MQCJ0vNKnbMYfrutij10Hwe', 'Admin', NULL, 'tlNcBVK9AvfYH7WEnwB1RKvocJu8FfRy4um3DJtwdHuJy0dwFsLOgAc0xUfh', now(), now()),
+    (2, 'operator', '$2a$10$rVqkOzHjN2MdlEprRflb1eGP0oZXuSrbJLOmJagFsCd81YZm0bsh.', 'Operator', NULL, NULL, now(), now());
 
 
 --

@@ -1,6 +1,7 @@
 package engine
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
@@ -28,5 +29,11 @@ func Migrate(cfg *config.Config) error {
 		}
 	}(mg)
 
-	return mg.Up()
+	if err = mg.Up(); err != nil {
+		if errors.Is(err, migrate.ErrNoChange) {
+			return nil
+		}
+		return err
+	}
+	return nil
 }

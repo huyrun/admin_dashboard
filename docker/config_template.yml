@@ -1,5 +1,5 @@
 env: {{ default "production" .Env.ENV }}
-server_address: {{ default "0.0.0.0:8080" .Env.SERVER_ADDRESS  }}
+server_address: {{ default "0.0.0.0:8000" .Env.SERVER_ADDRESS  }}
 database:
   default:
     driver: {{ default "postgresql" .Env.DB_DRIVER }}
@@ -21,8 +21,8 @@ index: {{ default "/" .Env.INDEX }}
 login_url: {{ default "Admin Dashboard" .Env.LOGIN_URL }}
 login_title: {{ default "Admin Dashboard" .Env.LOGIN_TITLE }}
 session_life_time: {{ default "7200" .Env.SESSION_LIFE_TIME }}
-access_assets_log_off: {{ default "true" .Env.ACCESS_ASSETS_LOG_OFF }}
+access_assets_log_off: {{ default "false" .Env.ACCESS_ASSETS_LOG_OFF }}
 sql_log: {{ default "true" .Env.SQL_LOG }}
-access_log_off: {{ default "true" .Env.ACCESS_LOG_OFF }}
-info_log_off: {{ default "true" .Env.INFO_LOG_OFF }}
-error_log_off: {{ default "true" .Env.ERROR_LOG_OFF }}
+access_log_off: {{ default "false" .Env.ACCESS_LOG_OFF }}
+info_log_off: {{ default "false" .Env.INFO_LOG_OFF }}
+error_log_off: {{ default "false" .Env.ERROR_LOG_OFF }}
