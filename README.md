@@ -28,3 +28,21 @@ To run the application locally:
     ```
 
 This will build and start the application in detached mode.
+
+## Change environments
+
+I use a config template to manage environment configurations: [config_template.yml](docker/config_template.yml)
+
+```yaml
+<config_name>: {{ default "<default value>" .Env.<ENV_NAME> }}
+```
+
+During Docker image build, dockerize parses the template into the config file [config.yml](etc/config/config.yml), which the app uses.
+
+To update environment configurations, modify [config_template.yml](docker/config_template.yml) and run the following command for local testing (no need to run this during Docker image builds):
+
+```shell
+dockerize -template docker/config_template.yml:etc/config/config.yml
+```
+
+Or, you can directly edit the environment in [config.yml](etc/config/config.yml). Note that this change won't affect Docker image builds unless you also update [config_template.yml](docker/config_template.yml).
