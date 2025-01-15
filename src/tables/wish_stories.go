@@ -1,6 +1,7 @@
 package tables
 
 import (
+	"errors"
 	"fmt"
 	"github.com/huyrun/go-admin/context"
 	"github.com/huyrun/go-admin/modules/db"
@@ -14,10 +15,13 @@ import (
 )
 
 type WishStory struct {
+	entity *Entity
 }
 
-func NewWishStory() (*WishStory, error) {
-	return &WishStory{}, nil
+func NewWishStory(entity *Entity) (*WishStory, error) {
+	return &WishStory{
+		entity: entity,
+	}, nil
 }
 
 func (t *WishStory) GetWishStoryTable(ctx *context.Context) table.Table {
@@ -98,5 +102,16 @@ func (t *WishStory) preProcess(values form2.Values) form2.Values {
 }
 
 func (t *WishStory) postValidator(values form2.Values) error {
+	entityID := values.Get("entity_id")
+	if entityID == "" {
+		return errors.New("entity id is required")
+	}
+	entity, err := t.entity.getByID(entityID)
+	if err != nil {
+		return err
+	}
+	if entity == nil {
+		return fmt.Errorf("not found entity %s", entityID)
+	}
 	return nil
 }

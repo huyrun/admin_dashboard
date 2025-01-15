@@ -26,26 +26,26 @@ func (t *Tag) GetTagsTable(ctx *context.Context) table.Table {
 	info := tags.GetInfo().SetFilterFormLayout(form.LayoutFilter)
 
 	info.AddField("ID", "id", db.Int8).FieldSortable().FieldFilterable()
-	info.AddField("Tag_name", "tag_name", db.Text).FieldSortable().FieldFilterable()
+	info.AddField("Tag Name", "tag_name", db.Text).FieldSortable().FieldFilterable()
 
 	info.SetTable(tableName).SetTitle("Tags").SetDescription("Tags").AddCSS(cssTableNoWrap)
 
 	formList := tags.GetForm()
 	formList.AddField("ID", "id", db.Int8, form.Text).FieldDisableWhenCreate().FieldDisplayButCanNotEditWhenUpdate()
-	formList.AddField("Tag_name", "tag_name", db.Text, form.RichText)
+	formList.AddField("Tag Name", "tag_name", db.Text, form.RichText)
 
 	formList.SetTable(tableName).SetTitle("Tags").SetDescription("Tags")
 
 	return tags
 }
 
-func (t *Tag) getByID(id string) (map[string]interface{}, error) {
+func (t *Tag) getByTagName(tagName string) (map[string]interface{}, error) {
 	query := `select id
-from entities
-where id = ?
+from tags
+where tag_name = ?
 order by id desc
 limit 1;`
-	res, err := t.conn.Query(query, id)
+	res, err := t.conn.Query(query, tagName)
 	if err != nil {
 		return map[string]interface{}{}, err
 	}

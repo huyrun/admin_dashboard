@@ -43,7 +43,7 @@ func (t *EntityTag) GetEntityTagTable(ctx *context.Context) table.Table {
 	formList := entityTags.GetForm()
 	formList.AddField("ID", "id", db.Int8, form.Text).FieldDisableWhenCreate().FieldDisplayButCanNotEditWhenUpdate()
 	formList.AddField("Entity ID", "entity_id", db.Int8, form.Text)
-	formList.AddField("Tag ID", "tag_id", db.Text, form.RichText)
+	formList.AddField("Tag ID", "tag_id", db.Text, form.Text)
 
 	formList.SetTable(tableName).SetTitle("EntityTags").SetDescription("Entity Tags")
 
@@ -67,7 +67,7 @@ func (t *EntityTag) postValidator(values form2.Values) error {
 	if tagID == "" {
 		return errors.New("tag id is required")
 	}
-	tag, err := t.tag.getByID(tagID)
+	tag, err := t.tag.getByTagName(tagID)
 	if err != nil {
 		return err
 	}

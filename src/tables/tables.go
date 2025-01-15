@@ -90,7 +90,7 @@ func NewGenerators(db *gorm.DB, conn db.Connection) (map[string]table.Generator,
 	if err != nil {
 		return nil, err
 	}
-	wishStory, err := NewWishStory()
+	wishStory, err := NewWishStory(entity)
 	if err != nil {
 		return nil, err
 	}
