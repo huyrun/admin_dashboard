@@ -3,13 +3,15 @@ package tables
 import (
 	"errors"
 	"fmt"
+	"strconv"
+
 	"github.com/huyrun/go-admin/context"
 	"github.com/huyrun/go-admin/modules/db"
 	form2 "github.com/huyrun/go-admin/plugins/admin/modules/form"
 	"github.com/huyrun/go-admin/plugins/admin/modules/table"
 	"github.com/huyrun/go-admin/template/types"
 	"github.com/huyrun/go-admin/template/types/form"
-	"strconv"
+	"github.com/oklog/ulid/v2"
 )
 
 type LikedEntities struct {
@@ -35,7 +37,12 @@ func (t *LikedEntities) GetLikedEntitiesTable(ctx *context.Context) table.Table 
 		})
 	info.AddField("User ID", "user_id", db.UUID).FieldSortable().FieldFilterable().
 		FieldDisplay(func(value types.FieldModel) interface{} {
-			return linkToOtherTable("users", value.Value)
+			var id ulid.ULID
+			err := id.UnmarshalBinary([]byte(value.Value))
+			if err != nil {
+				return linkToOtherTable("users", value.Value)
+			}
+			return linkToOtherTable("users", id.String())
 		})
 	info.AddField("Amount", "amount", db.Int2).FieldSortable()
 

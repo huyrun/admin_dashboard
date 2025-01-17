@@ -2,6 +2,8 @@ package tables
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/huyrun/go-admin/context"
 	"github.com/huyrun/go-admin/modules/db"
 	form2 "github.com/huyrun/go-admin/plugins/admin/modules/form"
@@ -9,7 +11,6 @@ import (
 	"github.com/huyrun/go-admin/template/color"
 	"github.com/huyrun/go-admin/template/types"
 	"github.com/huyrun/go-admin/template/types/form"
-	"time"
 )
 
 func GetGooseDbVersionTable(ctx *context.Context) table.Table {

@@ -3,7 +3,9 @@ package tables
 import (
 	"errors"
 	"fmt"
-	"github.com/google/uuid"
+	"strconv"
+	"time"
+
 	"github.com/huyrun/admin_dashboard/embed"
 	"github.com/huyrun/go-admin/context"
 	"github.com/huyrun/go-admin/modules/db"
@@ -14,10 +16,9 @@ import (
 	"github.com/huyrun/go-admin/template/color"
 	"github.com/huyrun/go-admin/template/types"
 	"github.com/huyrun/go-admin/template/types/form"
+	"github.com/oklog/ulid/v2"
 	"gopkg.in/yaml.v3"
 	"gorm.io/gorm"
-	"strconv"
-	"time"
 )
 
 type User struct {
@@ -32,8 +33,10 @@ type Country struct {
 	Code string `json:"code" yaml:"code"`
 }
 
-var userFields = []string{"username", "first_name", "last_name", "email", "role", "password_hash", "age", "dob", "sex",
-	"country", "city", "points", "avatar_url", "google_sub", "fb_id", "status"}
+var userFields = []string{
+	"username", "first_name", "last_name", "email", "role", "password_hash", "age", "dob", "sex",
+	"country", "city", "points", "avatar_url", "google_sub", "fb_id", "status",
+}
 
 func NewUser(db *gorm.DB, conn db.Connection) (*User, error) {
 	var countries []*Country
@@ -185,7 +188,7 @@ func (t *User) preProcess(values form2.Values) form2.Values {
 }
 
 func (t *User) insert(values form2.Values) error {
-	var m = make(map[string]interface{})
+	m := make(map[string]interface{})
 	for k := range values {
 		v := values.Get(k)
 		if utils.InArray(userFields, k) && len(v) > 0 {
@@ -193,7 +196,7 @@ func (t *User) insert(values form2.Values) error {
 		}
 	}
 
-	m["id"] = uuid.New()
+	m["id"] = ulid.Make().String()
 	if err := t.db.Table("users").Create(m).Error; err != nil {
 		return err
 	}
@@ -201,7 +204,7 @@ func (t *User) insert(values form2.Values) error {
 }
 
 func (t *User) countryList() types.FieldOptions {
-	var fieldOptions = types.FieldOptions{}
+	fieldOptions := types.FieldOptions{}
 	for _, c := range t.countries {
 		fieldOptions = append(fieldOptions, types.FieldOption{Text: c.Name, Value: c.Code})
 	}

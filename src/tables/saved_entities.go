@@ -3,12 +3,14 @@ package tables
 import (
 	"errors"
 	"fmt"
+
 	"github.com/huyrun/go-admin/context"
 	"github.com/huyrun/go-admin/modules/db"
 	form2 "github.com/huyrun/go-admin/plugins/admin/modules/form"
 	"github.com/huyrun/go-admin/plugins/admin/modules/table"
 	"github.com/huyrun/go-admin/template/types"
 	"github.com/huyrun/go-admin/template/types/form"
+	"github.com/oklog/ulid/v2"
 )
 
 type SavedEntitiesTable struct {
@@ -35,7 +37,12 @@ func (t *SavedEntitiesTable) GetSavedEntitiesTable(ctx *context.Context) table.T
 		})
 	info.AddField("User ID", "user_id", db.UUID).FieldAsDetailParam().FieldAsEditParam().FieldAsDeleteParam().FieldSortable().FieldFilterable().
 		FieldDisplay(func(value types.FieldModel) interface{} {
-			return linkToOtherTable("users", value.Value)
+			var id ulid.ULID
+			err := id.UnmarshalBinary([]byte(value.Value))
+			if err != nil {
+				return linkToOtherTable("users", value.Value)
+			}
+			return linkToOtherTable("users", id.String())
 		})
 	info.AddField("Type", "type", db.Text).FieldSortable()
 

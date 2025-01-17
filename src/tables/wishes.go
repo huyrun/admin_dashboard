@@ -3,6 +3,8 @@ package tables
 import (
 	"errors"
 	"fmt"
+	"time"
+
 	"github.com/huyrun/go-admin/context"
 	"github.com/huyrun/go-admin/modules/db"
 	form2 "github.com/huyrun/go-admin/plugins/admin/modules/form"
@@ -11,7 +13,7 @@ import (
 	"github.com/huyrun/go-admin/template/color"
 	"github.com/huyrun/go-admin/template/types"
 	"github.com/huyrun/go-admin/template/types/form"
-	"time"
+	"github.com/oklog/ulid/v2"
 )
 
 type Wish struct {
@@ -36,7 +38,12 @@ func (t *Wish) GetWishTable(ctx *context.Context) table.Table {
 	info.AddField("ID", "id", db.Int8).FieldSortable().FieldFilterable()
 	info.AddField("User ID", "user_id", db.UUID).FieldSortable().FieldFilterable().
 		FieldDisplay(func(value types.FieldModel) interface{} {
-			return linkToOtherTable("users", value.Value)
+			var id ulid.ULID
+			err := id.UnmarshalBinary([]byte(value.Value))
+			if err != nil {
+				return linkToOtherTable("users", value.Value)
+			}
+			return linkToOtherTable("users", id.String())
 		})
 	info.AddField("Entity ID", "entity_id", db.Int8).FieldSortable().FieldFilterable().
 		FieldDisplay(func(value types.FieldModel) interface{} {

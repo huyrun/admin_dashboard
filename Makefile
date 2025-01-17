@@ -6,6 +6,8 @@ GOTEST = $(GOCMD) test
 BINARY_NAME = goadmin
 CLI = adm
 
+SRC = `go list -f {{.Dir}} ./... | grep -v /vendor/`
+
 all: serve
 
 init:
@@ -28,5 +30,11 @@ ready-for-data:
 
 clean:
 	rm admin_test.db
+
+fmt:
+	@echo "==> Formatting source code..."
+	@goimports -w $(SRC)
+	@gofumpt -w $(SRC)
+	@-gci -w $(SRC)
 
 .PHONY: all serve build generate test black-box-test user-acceptance-test ready-for-data clean
