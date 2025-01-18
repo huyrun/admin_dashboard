@@ -3,6 +3,7 @@ package tables
 import (
 	"errors"
 	"fmt"
+	"github.com/huyrun/go-admin/plugins/admin/modules/parameter"
 	"strconv"
 	"time"
 
@@ -31,11 +32,6 @@ type User struct {
 type Country struct {
 	Name string `json:"name" yaml:"name"`
 	Code string `json:"code" yaml:"code"`
-}
-
-var userFields = []string{
-	"username", "first_name", "last_name", "email", "role", "password_hash", "age", "dob", "sex",
-	"country", "city", "points", "avatar_url", "google_sub", "fb_id", "status",
 }
 
 func NewUser(db *gorm.DB, conn db.Connection) (*User, error) {
@@ -68,7 +64,15 @@ func (t *User) GetUsersTable(ctx *context.Context) table.Table {
 	tableName := "users"
 	info := users.GetInfo().SetFilterFormLayout(form.LayoutFilter).SetSortField("created_at")
 
-	info.AddField("ID", "id", db.UUID).FieldSortable().FieldFilterable()
+	info.AddField("ID", "id", db.UUID).FieldSortable().FieldFilterable().
+		FieldDisplay(func(value types.FieldModel) interface{} {
+			var id ulid.ULID
+			err := id.UnmarshalBinary([]byte(value.Value))
+			if err != nil {
+				return value.Value
+			}
+			return id.String()
+		})
 	info.AddField("User Name", "username", db.Varchar).FieldSortable()
 	info.AddField("First Name", "first_name", db.Varchar).FieldSortable().FieldFilterable()
 	info.AddField("Last Name", "last_name", db.Varchar).FieldSortable().FieldFilterable()
@@ -144,13 +148,13 @@ func (t *User) GetUsersTable(ctx *context.Context) table.Table {
 
 	formList := users.GetForm()
 	formList.SetInsertFn(t.insert)
-	formList.SetPreProcessFn(t.preProcess)
+	formList.SetUpdateFn(t.update)
 	formList.AddField("User Name", "username", db.Varchar, form.Text)
 	formList.AddField("First Name", "first_name", db.Varchar, form.Text)
 	formList.AddField("Last Name", "last_name", db.Varchar, form.Text)
 	formList.AddField("Email", "email", db.Varchar, form.Email)
 	formList.AddField("Role", "role", db.Varchar, form.Text)
-	formList.AddField("Password Hash", "password_hash", db.Text, form.Text).FieldDisplayButCanNotEditWhenUpdate()
+	formList.AddField("Password Hash", "password_hash", db.Text, form.Text)
 	formList.AddField("Age", "age", db.Int2, form.Number).FieldDefault("18")
 	formList.AddField("Dob", "dob", db.Date, form.Date).FieldDefault(time.Now().Format("2006-01-02"))
 	formList.AddField("Sex", "sex", db.Tinyint, form.Radio).
@@ -173,30 +177,106 @@ func (t *User) GetUsersTable(ctx *context.Context) table.Table {
 
 	formList.SetTable(tableName).SetTitle("Users").SetDescription("Users")
 
+	users.GetDetailFromInfo().SetGetDataFn(t.getDetail)
+	users.GetInfo().SetDeleteFn(t.delete)
+
 	return users
 }
 
-func (t *User) preProcess(values form2.Values) form2.Values {
-	switch values.Get(form2.PostTypeKey) {
-	case "0": // update
-		values.Add("updated_at", time.Now().Format(time.RFC3339))
-	case "1": // create
-		values.Add("created_at", time.Now().Format(time.RFC3339))
-		values.Add("updated_at", time.Now().Format(time.RFC3339))
+func (t *User) getDetail(param parameter.Parameters) ([]map[string]interface{}, int) {
+	ulidString := param.PK()
+	ulidValue, err := ulid.Parse(ulidString)
+	if err != nil {
+		return nil, 0
 	}
-	return values
+
+	var result []map[string]interface{}
+	err = t.db.Raw("SELECT * FROM users WHERE id = ?", ulidValue).Scan(&result).Error
+	if err != nil {
+		return nil, 0
+	}
+
+	newResult := make([]map[string]interface{}, 0, len(result))
+	for _, row := range result {
+		for k, v := range row {
+			switch v.(type) {
+			case time.Time:
+				row[k] = v.(time.Time).Format(time.RFC3339)
+			default:
+			}
+		}
+		newResult = append(newResult, row)
+	}
+
+	return newResult, len(newResult)
 }
 
-func (t *User) insert(values form2.Values) error {
+func (t *User) delete(ids []string) error {
+	if len(ids) == 0 {
+		return nil
+	}
+	ulids := make([]ulid.ULID, 0, len(ids))
+	for _, id := range ids {
+		ulidValue, err := ulid.Parse(id)
+		if err != nil {
+			return err
+		}
+		ulids = append(ulids, ulidValue)
+	}
+
+	result := t.db.Exec("DELETE FROM users WHERE id IN ?", ulids)
+	if result.Error != nil {
+		return result.Error
+	}
+	if result.RowsAffected == 0 {
+		return errors.New("user not found")
+	}
+	return nil
+}
+
+func (t *User) update(values form2.Values) error {
+	var updateFields = []string{
+		"username", "first_name", "last_name", "email", "role", "password_hash", "age", "dob", "sex",
+		"country", "city", "points", "avatar_url", "google_sub", "fb_id", "status", "updated_at",
+	}
+
 	m := make(map[string]interface{})
 	for k := range values {
 		v := values.Get(k)
-		if utils.InArray(userFields, k) && len(v) > 0 {
+		if utils.InArray(updateFields, k) && len(v) > 0 {
 			m[k] = v
 		}
 	}
 
-	m["id"] = ulid.Make().String()
+	id := values.Get("id")
+	ulidValue, err := ulid.Parse(id)
+	if err != nil {
+		return err
+	}
+	m["updated_at"] = time.Now()
+	if err = t.db.Table("users").Where("id = ?", ulidValue).Updates(m).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (t *User) insert(values form2.Values) error {
+	var insertFields = []string{
+		"username", "first_name", "last_name", "email", "role", "password_hash", "age", "dob", "sex",
+		"country", "city", "points", "avatar_url", "google_sub", "fb_id", "status", "created_at", "updated_at",
+	}
+	m := make(map[string]interface{})
+	for k := range values {
+		v := values.Get(k)
+		if utils.InArray(insertFields, k) && len(v) > 0 {
+			m[k] = v
+		}
+	}
+
+	m["id"] = ulid.Make()
+	timeNow := time.Now()
+	m["created_at"] = timeNow
+	m["updated_at"] = timeNow
 	if err := t.db.Table("users").Create(m).Error; err != nil {
 		return err
 	}
@@ -212,13 +292,17 @@ func (t *User) countryList() types.FieldOptions {
 }
 
 func (t *User) getByID(id string) (map[string]interface{}, error) {
-	query := `select id, username, first_name, last_name, email, role, password_hash, 
-       age, dob ,sex , country , city, points, avatar_url, google_sub, fb_id, status, created_at, updated_at
+	ulidValue, err := ulid.Parse(id)
+	if err != nil {
+		return nil, err
+	}
+
+	query := `select *
 from users
 where id = ?
 order by id desc
 limit 1;`
-	res, err := t.conn.Query(query, id)
+	res, err := t.conn.Query(query, ulidValue)
 	if err != nil {
 		return map[string]interface{}{}, err
 	}
