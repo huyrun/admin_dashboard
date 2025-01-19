@@ -3,7 +3,6 @@ package tables
 import (
 	"errors"
 	"fmt"
-	"github.com/huyrun/go-admin/plugins/admin/modules/parameter"
 	"strconv"
 	"time"
 
@@ -12,6 +11,7 @@ import (
 	"github.com/huyrun/go-admin/modules/db"
 	"github.com/huyrun/go-admin/modules/utils"
 	form2 "github.com/huyrun/go-admin/plugins/admin/modules/form"
+	"github.com/huyrun/go-admin/plugins/admin/modules/parameter"
 	"github.com/huyrun/go-admin/plugins/admin/modules/table"
 	"github.com/huyrun/go-admin/template"
 	"github.com/huyrun/go-admin/template/color"
@@ -109,6 +109,9 @@ func (t *User) GetUsersTable(ctx *context.Context) table.Table {
 	info.AddField("Points", "points", db.Int).FieldSortable()
 	info.AddField("Avatar URL", "avatar_url", db.Varchar).
 		FieldDisplay(func(value types.FieldModel) interface{} {
+			if value.Value == "" {
+				return value.Value
+			}
 			return template.Default().Image().WithModal().SetSrc(template.HTML(value.Value)).GetContent()
 		})
 	info.AddField("Google Sub", "google_sub", db.Varchar)
@@ -200,6 +203,8 @@ func (t *User) getDetail(param parameter.Parameters) ([]map[string]interface{}, 
 	for _, row := range result {
 		for k, v := range row {
 			switch v.(type) {
+			case []uint8:
+				row[k] = string(v.([]uint8))
 			case time.Time:
 				row[k] = v.(time.Time).Format(time.RFC3339)
 			default:
@@ -235,7 +240,7 @@ func (t *User) delete(ids []string) error {
 }
 
 func (t *User) update(values form2.Values) error {
-	var updateFields = []string{
+	updateFields := []string{
 		"username", "first_name", "last_name", "email", "role", "password_hash", "age", "dob", "sex",
 		"country", "city", "points", "avatar_url", "google_sub", "fb_id", "status", "updated_at",
 	}
@@ -261,7 +266,7 @@ func (t *User) update(values form2.Values) error {
 }
 
 func (t *User) insert(values form2.Values) error {
-	var insertFields = []string{
+	insertFields := []string{
 		"username", "first_name", "last_name", "email", "role", "password_hash", "age", "dob", "sex",
 		"country", "city", "points", "avatar_url", "google_sub", "fb_id", "status", "created_at", "updated_at",
 	}

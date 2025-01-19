@@ -120,5 +120,9 @@ func (t *UserRelationships) postValidator(values form2.Values) error {
 		return fmt.Errorf("not found second user %s", secondUserID)
 	}
 
+	if firstUserID == secondUserID {
+		return fmt.Errorf("the first user ID and the second user ID are the same %s", firstUserID)
+	}
+
 	return nil
 }

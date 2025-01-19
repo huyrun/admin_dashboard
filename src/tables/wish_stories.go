@@ -51,8 +51,11 @@ func (t *WishStory) GetWishStoryTable(ctx *context.Context) table.Table {
 			}
 			return fmt.Sprintf(`<span class="label" style="text-decoration: line-through; background-color: %s; color: %s;">Unknown</span>`, color.Red, color.Black)
 		})
-	info.AddField("Image", "image", db.Varchar).FieldCopyable().
+	info.AddField("Image", "image", db.Varchar).
 		FieldDisplay(func(value types.FieldModel) interface{} {
+			if value.Value == "" {
+				return value.Value
+			}
 			return template.Default().Image().WithModal().SetSrc(template.HTML(value.Value)).GetContent()
 		})
 	info.AddField("Created At", "created_at", db.Timestamptz).FieldSortable().
@@ -77,7 +80,7 @@ func (t *WishStory) GetWishStoryTable(ctx *context.Context) table.Table {
 	formList := wishStories.GetForm()
 	formList.SetPreProcessFn(t.preProcess)
 	formList.SetPostValidator(t.postValidator)
-	formList.AddField("Entity ID", "entity_id", db.Int8, form.Text).FieldDisableWhenCreate().FieldDisplayButCanNotEditWhenUpdate()
+	formList.AddField("Entity ID", "entity_id", db.Int8, form.Text)
 	formList.AddField("Body", "body", db.Varchar, form.RichText)
 	formList.AddField("Image", "image", db.Varchar, form.Text)
 	formList.AddField("Status", "status", db.Tinyint, form.Switch).FieldDefault("draft").
