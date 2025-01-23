@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"html/template"
+	"strconv"
 
 	template2 "github.com/huyrun/go-admin/template"
 	"github.com/huyrun/go-admin/template/types"
@@ -10,6 +11,7 @@ import (
 )
 
 const (
+	White         = "#FFFFFF"
 	BrightBlue    = "#0063EC"
 	SaffronYellow = "#FFD154"
 	DarkGray      = "#3D3D3D"
@@ -78,4 +80,12 @@ func (s StatusMap) ToFieldDisplay(value types.FieldModel) interface{} {
 		return ToLabel(status.Text, status.BackgroundColor, status.Color)
 	}
 	return ToLabel(value.Value, MintGreen, DeepPurple)
+}
+
+func CastToNumber(value types.FieldModel) interface{} {
+	if _, err := strconv.Atoi(value.Value); err != nil {
+		return 0
+	}
+
+	return value.Value
 }

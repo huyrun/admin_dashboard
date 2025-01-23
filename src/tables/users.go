@@ -2,20 +2,18 @@ package tables
 
 import (
 	"errors"
-	"fmt"
 	"strconv"
 	"time"
 
 	"github.com/huyrun/admin_dashboard/embed"
-	utils2 "github.com/huyrun/admin_dashboard/src/utils"
+	"github.com/huyrun/admin_dashboard/src/utils"
 	"github.com/huyrun/go-admin/context"
 	"github.com/huyrun/go-admin/modules/db"
-	"github.com/huyrun/go-admin/modules/utils"
+	utils2 "github.com/huyrun/go-admin/modules/utils"
 	form2 "github.com/huyrun/go-admin/plugins/admin/modules/form"
 	"github.com/huyrun/go-admin/plugins/admin/modules/parameter"
 	"github.com/huyrun/go-admin/plugins/admin/modules/table"
 	"github.com/huyrun/go-admin/template"
-	"github.com/huyrun/go-admin/template/color"
 	"github.com/huyrun/go-admin/template/types"
 	"github.com/huyrun/go-admin/template/types/form"
 	"github.com/oklog/ulid/v2"
@@ -28,6 +26,7 @@ type User struct {
 	conn       db.Connection
 	countries  []*Country
 	countryMap map[string]*Country
+	statuses   utils.StatusMap
 }
 
 type Country struct {
@@ -47,11 +46,16 @@ func NewUser(db *gorm.DB, conn db.Connection) (*User, error) {
 		countryMap[c.Code] = c
 	}
 
+	statuses := make(utils.StatusMap)
+	statuses.Set("1", "Active", utils.SaffronYellow, utils.NavyBlue)
+	statuses.Set("0", "Inactive", utils.DarkGray, utils.SaffronYellow)
+
 	return &User{
 		db:         db,
 		conn:       conn,
 		countries:  countries,
 		countryMap: countryMap,
+		statuses:   statuses,
 	}, nil
 }
 
@@ -118,19 +122,8 @@ func (t *User) GetUsersTable(ctx *context.Context) table.Table {
 	info.AddField("Google Sub", "google_sub", db.Varchar)
 	info.AddField("FbID", "fb_id", db.Varchar)
 	info.AddField("Status", "status", db.Tinyint).
-		FieldFilterable(types.FilterType{FormType: form.SelectSingle}).FieldSortable().FieldFilterOptions(types.FieldOptions{
-		{Value: "1", Text: "Active"},
-		{Value: "0", Text: "Inactive"},
-	}).
-		FieldDisplay(func(value types.FieldModel) interface{} {
-			if value.Value == "0" {
-				return fmt.Sprintf(`<span class="label" style="background-color: %s; color: %s;">Inactive</span>`, color.Gray, color.White)
-			}
-			if value.Value == "1" {
-				return fmt.Sprintf(`<span class="label" style="background-color: %s;  color: %s;">Active</span>`, color.Yellow, color.Black)
-			}
-			return fmt.Sprintf(`<span class="label" style="text-decoration: line-through; background-color: %s; color: %s;">Unknown</span>`, color.Red, color.Black)
-		})
+		FieldFilterable(types.FilterType{FormType: form.SelectSingle}).FieldSortable().FieldFilterOptions(t.statuses.ToFieldOptions()).
+		FieldDisplay(t.statuses.ToFieldDisplay)
 	info.AddField("Created At", "created_at", db.Timestamptz).FieldSortable().
 		FieldDisplay(func(value types.FieldModel) interface{} {
 			v, err := time.Parse(time.RFC3339, value.Value)
@@ -148,7 +141,7 @@ func (t *User) GetUsersTable(ctx *context.Context) table.Table {
 			return v.Format("2006-01-02 15:04:05")
 		})
 
-	info.SetTable(tableName).SetTitle("Users").SetDescription("Users").AddCSS(utils2.CssTableNoWrap)
+	info.SetTable(tableName).SetTitle("Users").SetDescription("Users").AddCSS(utils.CssTableNoWrap)
 
 	formList := users.GetForm()
 	formList.SetInsertFn(t.insert)
@@ -159,7 +152,7 @@ func (t *User) GetUsersTable(ctx *context.Context) table.Table {
 	formList.AddField("Email", "email", db.Varchar, form.Email)
 	formList.AddField("Role", "role", db.Varchar, form.Text)
 	formList.AddField("Password Hash", "password_hash", db.Text, form.Text)
-	formList.AddField("Age", "age", db.Int2, form.Number).FieldDefault("18")
+	formList.AddField("Age", "age", db.Int2, form.Number).FieldDisplay(utils.CastToNumber)
 	formList.AddField("Dob", "dob", db.Date, form.Date).FieldDefault(time.Now().Format("2006-01-02"))
 	formList.AddField("Sex", "sex", db.Tinyint, form.Radio).
 		FieldOptions(types.FieldOptions{
@@ -169,15 +162,11 @@ func (t *User) GetUsersTable(ctx *context.Context) table.Table {
 	formList.AddField("Country", "country", db.Varchar, form.SelectSingle).
 		FieldInputWidth(4).FieldOptions(t.countryList())
 	formList.AddField("City", "city", db.Varchar, form.Text).FieldInputWidth(4)
-	formList.AddField("Points", "points", db.Int, form.Number).FieldDefault("0")
+	formList.AddField("Points", "points", db.Int, form.Number).FieldDisplay(utils.CastToNumber)
 	formList.AddField("Avatar URL", "avatar_url", db.Varchar, form.Text)
 	formList.AddField("Google Sub", "google_sub", db.Varchar, form.Text)
 	formList.AddField("FbID", "fb_id", db.Varchar, form.Text)
-	formList.AddField("Status", "status", db.Tinyint, form.Switch).FieldDefault("1").
-		FieldOptions(types.FieldOptions{
-			{Text: "Active", Value: "1"},
-			{Text: "Inactive", Value: "0"},
-		})
+	formList.AddField("Status", "status", db.Tinyint, form.Switch).FieldDefault("1").FieldOptions(t.statuses.ToFieldOptions())
 
 	formList.SetTable(tableName).SetTitle("Users").SetDescription("Users")
 
@@ -249,7 +238,7 @@ func (t *User) update(values form2.Values) error {
 	m := make(map[string]interface{})
 	for k := range values {
 		v := values.Get(k)
-		if utils.InArray(updateFields, k) && len(v) > 0 {
+		if utils2.InArray(updateFields, k) && len(v) > 0 {
 			m[k] = v
 		}
 	}
@@ -274,7 +263,7 @@ func (t *User) insert(values form2.Values) error {
 	m := make(map[string]interface{})
 	for k := range values {
 		v := values.Get(k)
-		if utils.InArray(insertFields, k) && len(v) > 0 {
+		if utils2.InArray(insertFields, k) && len(v) > 0 {
 			m[k] = v
 		}
 	}

@@ -38,15 +38,11 @@ func NewWishStory(entity *Entity, db *gorm.DB, conn db.Connection) (*WishStory, 
 }
 
 func (t *WishStory) GetWishStoryTable(ctx *context.Context) table.Table {
-	tableConfig := table.DefaultConfigWithDriver("postgresql")
-	tableConfig.PrimaryKey = table.PrimaryKey{
-		Type: db.Int8,
-		Name: "entity_id",
-	}
-	wishStories := table.NewDefaultTable(ctx, tableConfig)
+	wishStories := table.NewDefaultTable(ctx, table.DefaultConfigWithDriver("postgresql"))
 	tableName := "wish_stories"
 	info := wishStories.GetInfo().SetFilterFormLayout(form.LayoutFilter)
 
+	info.AddField("ID", "id", db.Int8).FieldSortable().FieldFilterable()
 	info.AddField("Entity ID", "entity_id", db.Int8).FieldSortable().FieldFilterable()
 	info.AddField("Body", "body", db.Text)
 	info.AddField("Status", "status", db.Text).FieldFilterable(types.FilterType{FormType: form.SelectSingle}).FieldSortable().
@@ -75,16 +71,17 @@ func (t *WishStory) GetWishStoryTable(ctx *context.Context) table.Table {
 			return v.Format("2006-01-02 15:04:05")
 		})
 
-	info.SetTable(tableName).SetTitle("WishStories").SetDescription("WishS tories").AddCSS(utils.CssTableNoWrap)
+	info.SetTable(tableName).SetTitle("WishStories").SetDescription("Wish Stories").AddCSS(utils.CssTableNoWrap)
 
 	formList := wishStories.GetForm()
 	formList.SetInsertFn(t.insert)
 	formList.SetUpdateFn(t.update)
 	formList.SetPostValidator(t.postValidator)
+	formList.AddField("ID", "id", db.Int8, form.Text).FieldDisableWhenCreate().FieldDisplayButCanNotEditWhenUpdate()
 	formList.AddField("Entity ID", "entity_id", db.Int8, form.Text)
 	formList.AddField("Body", "body", db.Varchar, form.TextArea)
 	formList.AddField("Image", "image", db.Varchar, form.Text)
-	formList.AddField("Status", "status", db.Tinyint, form.Switch).FieldOptions(t.statuses.ToFieldOptions())
+	formList.AddField("Status", "status", db.Tinyint, form.SelectSingle).FieldOptions(t.statuses.ToFieldOptions())
 
 	formList.SetTable(tableName).SetTitle("WishStories").SetDescription("Wish Stories")
 

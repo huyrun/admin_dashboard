@@ -63,7 +63,7 @@ func (t *Activity) GetActivitiesTable(ctx *context.Context) table.Table {
 	formList.SetPostValidator(t.postValidator)
 	formList.AddField("ID", "id", db.Int8, form.Text).FieldDisableWhenCreate().FieldDisplayButCanNotEditWhenUpdate()
 	formList.AddField("Action", "action", db.Varchar, form.Text)
-	formList.AddField("Points", "points", db.Int, form.Number).FieldDefault("0")
+	formList.AddField("Points", "points", db.Int, form.Number).FieldDisplay(utils.CastToNumber)
 	formList.AddField("User ID", "user_id", db.UUID, form.Text).FieldDisplay(utils.ParseUserID)
 	formList.AddField("Entity ID", "entity_id", db.Int8, form.Text)
 

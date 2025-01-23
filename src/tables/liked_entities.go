@@ -54,7 +54,7 @@ func (t *LikedEntities) GetLikedEntitiesTable(ctx *context.Context) table.Table 
 	formList.AddField("ID", "id", db.Int8, form.Text).FieldDisableWhenCreate().FieldDisplayButCanNotEditWhenUpdate()
 	formList.AddField("Entity ID", "entity_id", db.Int8, form.Text)
 	formList.AddField("User ID", "user_id", db.Text, form.Text).FieldDisplay(utils.ParseUserID)
-	formList.AddField("Amount", "amount", db.Int8, form.Number).FieldDefault("0")
+	formList.AddField("Amount", "amount", db.Int8, form.Number).FieldDisplay(utils.CastToNumber)
 
 	formList.SetTable(tableName).SetTitle("LikedEntities").SetDescription("Liked Entities")
 

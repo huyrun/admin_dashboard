@@ -31,8 +31,8 @@ func NewUserRelationships(user *User, entity *Entity, db *gorm.DB, conn db.Conne
 	statuses1.Set("subscribed", "Subscribed", utils.SaffronYellow, color.Blue)
 
 	statuses2 := make(utils.StatusMap)
-	statuses2.Set("true", "Yes", utils.SaffronYellow, color.Blue)
-	statuses2.Set("false", "No", utils.DarkGray, color.Yellow)
+	statuses2.Set("true", "Yes", utils.SaffronYellow, utils.NavyBlue)
+	statuses2.Set("false", "No", utils.DarkGray, utils.SaffronYellow)
 
 	return &UserRelationships{
 		db:        db,

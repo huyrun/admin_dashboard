@@ -12,7 +12,6 @@ import (
 	form2 "github.com/huyrun/go-admin/plugins/admin/modules/form"
 	"github.com/huyrun/go-admin/plugins/admin/modules/table"
 	"github.com/huyrun/go-admin/template"
-	"github.com/huyrun/go-admin/template/color"
 	"github.com/huyrun/go-admin/template/types"
 	"github.com/huyrun/go-admin/template/types/form"
 	"github.com/oklog/ulid/v2"
@@ -30,7 +29,7 @@ type Wish struct {
 
 func NewWish(user *User, entity *Entity, category *Category, db *gorm.DB, conn db.Connection) (*Wish, error) {
 	statuses := make(utils.StatusMap)
-	statuses.Set("new", "New", utils.BrightBlue, color.White)
+	statuses.Set("new", "New", utils.BrightBlue, utils.White)
 	statuses.Set("completed", "Completed", utils.SaffronYellow, utils.NavyBlue)
 
 	return &Wish{
@@ -101,10 +100,10 @@ func (t *Wish) GetWishTable(ctx *context.Context) table.Table {
 	formList.AddField("Title", "title", db.Varchar, form.Text)
 	formList.AddField("Description", "description", db.Varchar, form.TextArea)
 	formList.AddField("Story", "story", db.Varchar, form.TextArea)
-	formList.AddField("Price", "price", db.Int8, form.Number).FieldDefault("0")
+	formList.AddField("Price", "price", db.Int8, form.Number).FieldDisplay(utils.CastToNumber)
 	formList.AddField("Currency", "currency", db.Varchar, form.Text)
 	formList.AddField("Category ID", "category_id", db.Int8, form.Text)
-	formList.AddField("Visible By", "visible_by", db.Int8, form.Number)
+	formList.AddField("Visible By", "visible_by", db.Int8, form.Number).FieldDisplay(utils.CastToNumber)
 	formList.AddField("Image", "image", db.Varchar, form.Text)
 	formList.AddField("Status", "status", db.Tinyint, form.SelectSingle).FieldDefault("new").FieldOptions(t.statuses.ToFieldOptions())
 
