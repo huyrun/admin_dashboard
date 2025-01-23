@@ -5,21 +5,29 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/huyrun/admin_dashboard/src/utils"
 	"github.com/huyrun/go-admin/context"
 	"github.com/huyrun/go-admin/modules/db"
+	utils2 "github.com/huyrun/go-admin/modules/utils"
 	form2 "github.com/huyrun/go-admin/plugins/admin/modules/form"
 	"github.com/huyrun/go-admin/plugins/admin/modules/table"
 	"github.com/huyrun/go-admin/template/types"
 	"github.com/huyrun/go-admin/template/types/form"
+	"github.com/oklog/ulid/v2"
+	"gorm.io/gorm"
 )
 
 type Activity struct {
+	db     *gorm.DB
+	conn   db.Connection
 	user   *User
 	entity *Entity
 }
 
-func NewActivity(user *User, entity *Entity) (*Activity, error) {
+func NewActivity(user *User, entity *Entity, db *gorm.DB, conn db.Connection) (*Activity, error) {
 	return &Activity{
+		db:     db,
+		conn:   conn,
 		user:   user,
 		entity: entity,
 	}, nil
@@ -33,13 +41,10 @@ func (t *Activity) GetActivitiesTable(ctx *context.Context) table.Table {
 	info.AddField("ID", "id", db.Int8).FieldSortable().FieldFilterable()
 	info.AddField("Action", "action", db.Varchar)
 	info.AddField("Points", "points", db.Int).FieldSortable()
-	info.AddField("User ID", "user_id", db.UUID).FieldSortable().FieldFilterable().
-		FieldDisplay(func(value types.FieldModel) interface{} {
-			return linkToOtherTable("users", value.Value)
-		})
+	info.AddField("User ID", "user_id", db.UUID).FieldSortable().FieldFilterable().FieldDisplay(utils.ParseUserIDToLink)
 	info.AddField("Entity ID", "entity_id", db.Int8).FieldSortable().FieldFilterable().
 		FieldDisplay(func(value types.FieldModel) interface{} {
-			return linkToOtherTable("entities", value.Value)
+			return utils.LinkToOtherTable("entities", value.Value)
 		})
 	info.AddField("Created At", "created_at", db.Timestamptz).FieldSortable().FieldSortable().
 		FieldDisplay(func(value types.FieldModel) interface{} {
@@ -50,28 +55,21 @@ func (t *Activity) GetActivitiesTable(ctx *context.Context) table.Table {
 			return v.Format("2006-01-02 15:04:05")
 		})
 
-	info.SetTable(tableName).SetTitle("Activities").SetDescription("Activities").AddCSS(cssTableNoWrap)
+	info.SetTable(tableName).SetTitle("Activities").SetDescription("Activities").AddCSS(utils.CssTableNoWrap)
 
 	formList := activities.GetForm()
+	formList.SetInsertFn(t.insert)
+	formList.SetUpdateFn(t.update)
 	formList.SetPostValidator(t.postValidator)
-	formList.SetPreProcessFn(t.preProcess)
 	formList.AddField("ID", "id", db.Int8, form.Text).FieldDisableWhenCreate().FieldDisplayButCanNotEditWhenUpdate()
 	formList.AddField("Action", "action", db.Varchar, form.Text)
 	formList.AddField("Points", "points", db.Int, form.Number).FieldDefault("0")
-	formList.AddField("User ID", "user_id", db.UUID, form.Text)
+	formList.AddField("User ID", "user_id", db.UUID, form.Text).FieldDisplay(utils.ParseUserID)
 	formList.AddField("Entity ID", "entity_id", db.Int8, form.Text)
 
-	formList.SetTable(tableName).SetTitle("Activities").SetDescription("Activities").AddCSS(cssTableNoWrap)
+	formList.SetTable(tableName).SetTitle("Activities").SetDescription("Activities").AddCSS(utils.CssTableNoWrap)
 
 	return activities
-}
-
-func (t *Activity) preProcess(values form2.Values) form2.Values {
-	switch values.Get(form2.PostTypeKey) {
-	case "1": // create
-		values.Add("created_at", time.Now().Format(time.RFC3339))
-	}
-	return values
 }
 
 func (t *Activity) postValidator(values form2.Values) error {
@@ -99,5 +97,56 @@ func (t *Activity) postValidator(values form2.Values) error {
 		return fmt.Errorf("not found entity %s", entityID)
 	}
 
+	return nil
+}
+
+func (t *Activity) update(values form2.Values) error {
+	updateFields := []string{
+		"action", "points", "entity_id",
+	}
+
+	m := make(map[string]interface{})
+	for k := range values {
+		v := values.Get(k)
+		if utils2.InArray(updateFields, k) && len(v) > 0 {
+			m[k] = v
+		}
+	}
+
+	id := values.Get("id")
+	userID := values.Get("user_id")
+	ulidValue, err := ulid.Parse(userID)
+	if err != nil {
+		return err
+	}
+	m["user_id"] = ulidValue
+	if err = t.db.Table("activities").Where("id = ?", id).Updates(m).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (t *Activity) insert(values form2.Values) error {
+	insertFields := []string{
+		"action", "points", "entity_id",
+	}
+	m := make(map[string]interface{})
+	for k := range values {
+		v := values.Get(k)
+		if utils2.InArray(insertFields, k) && len(v) > 0 {
+			m[k] = v
+		}
+	}
+
+	userID := values.Get("user_id")
+	ulidValue, err := ulid.Parse(userID)
+	if err != nil {
+		return err
+	}
+	m["user_id"] = ulidValue
+	m["created_at"] = time.Now()
+	if err = t.db.Table("activities").Create(m).Error; err != nil {
+		return err
+	}
 	return nil
 }

@@ -4,22 +4,29 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/huyrun/admin_dashboard/src/utils"
 	"github.com/huyrun/go-admin/context"
 	"github.com/huyrun/go-admin/modules/db"
+	utils2 "github.com/huyrun/go-admin/modules/utils"
 	form2 "github.com/huyrun/go-admin/plugins/admin/modules/form"
 	"github.com/huyrun/go-admin/plugins/admin/modules/table"
 	"github.com/huyrun/go-admin/template/types"
 	"github.com/huyrun/go-admin/template/types/form"
 	"github.com/oklog/ulid/v2"
+	"gorm.io/gorm"
 )
 
 type SavedEntitiesTable struct {
+	db     *gorm.DB
+	conn   db.Connection
 	user   *User
 	entity *Entity
 }
 
-func NewSavedEntities(user *User, entity *Entity) (*SavedEntitiesTable, error) {
+func NewSavedEntities(user *User, entity *Entity, db *gorm.DB, conn db.Connection) (*SavedEntitiesTable, error) {
 	return &SavedEntitiesTable{
+		db:     db,
+		conn:   conn,
 		user:   user,
 		entity: entity,
 	}, nil
@@ -33,27 +40,21 @@ func (t *SavedEntitiesTable) GetSavedEntitiesTable(ctx *context.Context) table.T
 	info.AddField("ID", "id", db.Int8).FieldFilterable().FieldSortable()
 	info.AddField("Entity ID", "entity_id", db.Int8).FieldAsDetailParam().FieldAsEditParam().FieldAsDeleteParam().FieldSortable().FieldFilterable().
 		FieldDisplay(func(value types.FieldModel) interface{} {
-			return linkToOtherTable("entities", value.Value)
+			return utils.LinkToOtherTable("entities", value.Value)
 		})
-	info.AddField("User ID", "user_id", db.UUID).FieldAsDetailParam().FieldAsEditParam().FieldAsDeleteParam().FieldSortable().FieldFilterable().
-		FieldDisplay(func(value types.FieldModel) interface{} {
-			var id ulid.ULID
-			err := id.UnmarshalBinary([]byte(value.Value))
-			if err != nil {
-				return linkToOtherTable("users", value.Value)
-			}
-			return linkToOtherTable("users", id.String())
-		})
+	info.AddField("User ID", "user_id", db.UUID).FieldAsDetailParam().FieldAsEditParam().FieldAsDeleteParam().FieldSortable().FieldFilterable().FieldDisplay(utils.ParseUserIDToLink)
 	info.AddField("Type", "type", db.Text).FieldSortable()
 
-	info.SetTable(tableName).SetTitle("SavedEntities").SetDescription("Saved Entities").AddCSS(cssTableNoWrap)
+	info.SetTable(tableName).SetTitle("SavedEntities").SetDescription("Saved Entities").AddCSS(utils.CssTableNoWrap)
 
 	formList := savedEntities.GetForm()
+	formList.SetInsertFn(t.insert)
+	formList.SetUpdateFn(t.update)
 	formList.SetPostValidator(t.postValidator)
 	formList.AddField("ID", "id", db.Int8, form.Text).FieldDisableWhenCreate().FieldDisplayButCanNotEditWhenUpdate()
 	formList.AddField("Entity ID", "entity_id", db.Int8, form.Text)
-	formList.AddField("User ID", "user_id", db.Text, form.Text)
-	formList.AddField("Type", "type", db.Text, form.Text).FieldDefault("wish")
+	formList.AddField("User ID", "user_id", db.Text, form.Text).FieldDisplay(utils.ParseUserID)
+	formList.AddField("Type", "type", db.Text, form.Text)
 
 	formList.SetTable(tableName).SetTitle("SavedEntities").SetDescription("Saved Entities")
 
@@ -73,5 +74,55 @@ func (t *SavedEntitiesTable) postValidator(values form2.Values) error {
 		return fmt.Errorf("not found user %s", userID)
 	}
 
+	return nil
+}
+
+func (t *SavedEntitiesTable) update(values form2.Values) error {
+	updateFields := []string{
+		"entity_id", "type",
+	}
+
+	m := make(map[string]interface{})
+	for k := range values {
+		v := values.Get(k)
+		if utils2.InArray(updateFields, k) && len(v) > 0 {
+			m[k] = v
+		}
+	}
+
+	id := values.Get("id")
+	userID := values.Get("user_id")
+	ulidValue, err := ulid.Parse(userID)
+	if err != nil {
+		return err
+	}
+	m["user_id"] = ulidValue
+	if err = t.db.Table("saved_entities").Where("id = ?", id).Updates(m).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (t *SavedEntitiesTable) insert(values form2.Values) error {
+	insertFields := []string{
+		"entity_id", "type",
+	}
+	m := make(map[string]interface{})
+	for k := range values {
+		v := values.Get(k)
+		if utils2.InArray(insertFields, k) && len(v) > 0 {
+			m[k] = v
+		}
+	}
+
+	userID := values.Get("user_id")
+	ulidValue, err := ulid.Parse(userID)
+	if err != nil {
+		return err
+	}
+	m["user_id"] = ulidValue
+	if err = t.db.Table("saved_entities").Create(m).Error; err != nil {
+		return err
+	}
 	return nil
 }

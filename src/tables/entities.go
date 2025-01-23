@@ -1,6 +1,7 @@
 package tables
 
 import (
+	"github.com/huyrun/admin_dashboard/src/utils"
 	"github.com/huyrun/go-admin/context"
 	"github.com/huyrun/go-admin/modules/db"
 	"github.com/huyrun/go-admin/plugins/admin/modules/table"
@@ -27,12 +28,12 @@ func (t *Entity) GetEntitiesTable(ctx *context.Context) table.Table {
 
 	info.AddField("ID", "id", db.Int8).FieldSortable().FieldFilterable()
 
-	info.SetTable(tableName).SetTitle("Entities").SetDescription("Entities").AddCSS(cssTableNoWrap)
+	info.SetTable(tableName).SetTitle("Entities").SetDescription("Entities").AddCSS(utils.CssTableNoWrap)
 
 	formList := entities.GetForm()
 	formList.AddField("Id", "id", db.Int8, form.Number).FieldDisplayButCanNotEditWhenUpdate()
 
-	formList.SetTable(tableName).SetTitle("Entities").SetDescription("Entities").AddCSS(cssTableNoWrap)
+	formList.SetTable(tableName).SetTitle("Entities").SetDescription("Entities").AddCSS(utils.CssTableNoWrap)
 
 	return entities
 }

@@ -557,6 +557,27 @@ ALTER TABLE ONLY public.goadmin_session
 ALTER TABLE ONLY public.goadmin_users
     ADD CONSTRAINT goadmin_users_pkey PRIMARY KEY (id);
 
+--
+insert into public.goadmin_menu (id, parent_id, type, order, title, header, plugin_name, icon, uri, uuid, created_at, updated_at) values (1, 0, 1, 2, 'Admin', null, '', 'fa-tasks', '', null, '2025-01-21 08:48:24.720883', '2025-01-21 08:48:24.720883');
+insert into public.goadmin_menu (id, parent_id, type, order, title, header, plugin_name, icon, uri, uuid, created_at, updated_at) values (2, 1, 1, 2, 'Users', null, '', 'fa-users', '/info/manager', null, '2025-01-21 08:48:24.720883', '2025-01-21 08:48:24.720883');
+insert into public.goadmin_menu (id, parent_id, type, order, title, header, plugin_name, icon, uri, uuid, created_at, updated_at) values (3, 1, 1, 3, 'Roles', null, '', 'fa-user', '/info/roles', null, '2025-01-21 08:48:24.720883', '2025-01-21 08:48:24.720883');
+insert into public.goadmin_menu (id, parent_id, type, order, title, header, plugin_name, icon, uri, uuid, created_at, updated_at) values (4, 1, 1, 4, 'Permission', null, '', 'fa-ban', '/info/permission', null, '2025-01-21 08:48:24.720883', '2025-01-21 08:48:24.720883');
+insert into public.goadmin_menu (id, parent_id, type, order, title, header, plugin_name, icon, uri, uuid, created_at, updated_at) values (5, 1, 1, 5, 'Menu', null, '', 'fa-bars', '/menu', null, '2025-01-21 08:48:24.720883', '2025-01-21 08:48:24.720883');
+insert into public.goadmin_menu (id, parent_id, type, order, title, header, plugin_name, icon, uri, uuid, created_at, updated_at) values (6, 1, 1, 6, 'Operation log', null, '', 'fa-history', '/info/op', null, '2025-01-21 08:48:24.720883', '2025-01-21 08:48:24.720883');
+insert into public.goadmin_menu (id, parent_id, type, order, title, header, plugin_name, icon, uri, uuid, created_at, updated_at) values (7, 0, 1, 1, 'Dashboard', null, '', 'fa-bar-chart', '/', null, '2025-01-21 08:48:24.720883', '2025-01-21 08:48:24.720883');
+insert into public.goadmin_menu (id, parent_id, type, order, title, header, plugin_name, icon, uri, uuid, created_at, updated_at) values (8, 7, 0, 2, 'Users', 'Users', '', 'fa-bars', '/info/users', null, '2025-01-21 08:48:47.952185', '2025-01-21 08:48:47.952185');
+insert into public.goadmin_menu (id, parent_id, type, order, title, header, plugin_name, icon, uri, uuid, created_at, updated_at) values (9, 7, 0, 2, 'Wishes', 'Wishes', '', 'fa-bars', '/info/wishes', null, '2025-01-21 08:49:24.283486', '2025-01-21 08:49:24.283486');
+insert into public.goadmin_menu (id, parent_id, type, order, title, header, plugin_name, icon, uri, uuid, created_at, updated_at) values (10, 7, 0, 2, 'Activities', 'Activities', '', 'fa-bars', '/info/activities', null, '2025-01-21 14:49:54.367291', '2025-01-21 14:49:54.367291');
+insert into public.goadmin_menu (id, parent_id, type, order, title, header, plugin_name, icon, uri, uuid, created_at, updated_at) values (11, 7, 0, 2, 'Categories', 'Categories', '', 'fa-bars', '/info/categories', null, '2025-01-21 14:50:53.529945', '2025-01-21 14:50:53.529945');
+insert into public.goadmin_menu (id, parent_id, type, order, title, header, plugin_name, icon, uri, uuid, created_at, updated_at) values (12, 7, 0, 2, 'Entities', 'Entities', '', 'fa-bars', '/info/entities', null, '2025-01-21 14:51:09.123601', '2025-01-21 14:51:09.123601');
+insert into public.goadmin_menu (id, parent_id, type, order, title, header, plugin_name, icon, uri, uuid, created_at, updated_at) values (13, 7, 0, 2, 'Entity Comments', 'Entity Comments', '', 'fa-bars', '/info/entiy_comments', null, '2025-01-21 14:51:59.736326', '2025-01-21 14:51:59.736326');
+insert into public.goadmin_menu (id, parent_id, type, order, title, header, plugin_name, icon, uri, uuid, created_at, updated_at) values (14, 7, 0, 2, 'Entity Tags', 'Entity Tags', '', 'fa-bars', '/info/entity_tags', null, '2025-01-21 14:52:19.068778', '2025-01-21 14:52:19.068778');
+insert into public.goadmin_menu (id, parent_id, type, order, title, header, plugin_name, icon, uri, uuid, created_at, updated_at) values (15, 7, 0, 2, 'Liked Entities', 'Liked Entities', '', 'fa-bars', '/info/liked_entities', null, '2025-01-21 14:56:27.001936', '2025-01-21 14:56:27.001936');
+insert into public.goadmin_menu (id, parent_id, type, order, title, header, plugin_name, icon, uri, uuid, created_at, updated_at) values (16, 7, 0, 2, 'Saved Entities', 'Saved Entities', '', 'fa-bars', '/info/saved_entities', null, '2025-01-21 14:57:09.138129', '2025-01-21 14:57:09.138129');
+insert into public.goadmin_menu (id, parent_id, type, order, title, header, plugin_name, icon, uri, uuid, created_at, updated_at) values (17, 7, 0, 2, 'Tags', 'Tags', '', 'fa-bars', '/info/tags', null, '2025-01-21 14:57:24.388059', '2025-01-21 14:57:24.388059');
+insert into public.goadmin_menu (id, parent_id, type, order, title, header, plugin_name, icon, uri, uuid, created_at, updated_at) values (18, 7, 0, 2, 'User Relationships', 'User Relationships', '', 'fa-bars', '/info/user_relationship', null, '2025-01-21 14:57:48.608260', '2025-01-21 14:57:48.608260');
+insert into public.goadmin_menu (id, parent_id, type, order, title, header, plugin_name, icon, uri, uuid, created_at, updated_at) values (19, 7, 0, 2, 'Wish Stories', 'Wish Stories', '', 'fa-bars', '/info/wish_stories', null, '2025-01-21 14:58:10.367121', '2025-01-21 14:58:10.367121');
+
 
 --
 -- Name: SCHEMA public; Type: ACL; Schema: -; Owner: postgres

@@ -5,23 +5,35 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/huyrun/admin_dashboard/src/utils"
 	"github.com/huyrun/go-admin/context"
 	"github.com/huyrun/go-admin/modules/db"
+	utils2 "github.com/huyrun/go-admin/modules/utils"
 	form2 "github.com/huyrun/go-admin/plugins/admin/modules/form"
 	"github.com/huyrun/go-admin/plugins/admin/modules/table"
 	"github.com/huyrun/go-admin/template"
-	"github.com/huyrun/go-admin/template/color"
 	"github.com/huyrun/go-admin/template/types"
 	"github.com/huyrun/go-admin/template/types/form"
+	"github.com/oklog/ulid/v2"
+	"gorm.io/gorm"
 )
 
 type WishStory struct {
-	entity *Entity
+	db       *gorm.DB
+	conn     db.Connection
+	entity   *Entity
+	statuses utils.StatusMap
 }
 
-func NewWishStory(entity *Entity) (*WishStory, error) {
+func NewWishStory(entity *Entity, db *gorm.DB, conn db.Connection) (*WishStory, error) {
+	statuses := make(utils.StatusMap)
+	statuses.Set("published", "Published", utils.SaffronYellow, utils.NavyBlue)
+
 	return &WishStory{
-		entity: entity,
+		db:       db,
+		conn:     conn,
+		entity:   entity,
+		statuses: statuses,
 	}, nil
 }
 
@@ -37,20 +49,8 @@ func (t *WishStory) GetWishStoryTable(ctx *context.Context) table.Table {
 
 	info.AddField("Entity ID", "entity_id", db.Int8).FieldSortable().FieldFilterable()
 	info.AddField("Body", "body", db.Text)
-	info.AddField("Status", "status", db.Text).
-		FieldFilterable(types.FilterType{FormType: form.SelectSingle}).FieldSortable().FieldFilterOptions(types.FieldOptions{
-		{Value: "completed", Text: "Completed"},
-		{Value: "draft", Text: "Draft"},
-	}).
-		FieldDisplay(func(value types.FieldModel) interface{} {
-			if value.Value == "draft" {
-				return fmt.Sprintf(`<span class="label" style="background-color: %s; color: %s;">Draft</span>`, color.Gray, color.White)
-			}
-			if value.Value == "completed" {
-				return fmt.Sprintf(`<span class="label" style="background-color: %s;  color: %s;">Completed</span>`, color.Yellow, color.Black)
-			}
-			return fmt.Sprintf(`<span class="label" style="text-decoration: line-through; background-color: %s; color: %s;">Unknown</span>`, color.Red, color.Black)
-		})
+	info.AddField("Status", "status", db.Text).FieldFilterable(types.FilterType{FormType: form.SelectSingle}).FieldSortable().
+		FieldFilterOptions(t.statuses.ToFieldOptions()).FieldDisplay(t.statuses.ToFieldDisplay)
 	info.AddField("Image", "image", db.Varchar).
 		FieldDisplay(func(value types.FieldModel) interface{} {
 			if value.Value == "" {
@@ -75,34 +75,20 @@ func (t *WishStory) GetWishStoryTable(ctx *context.Context) table.Table {
 			return v.Format("2006-01-02 15:04:05")
 		})
 
-	info.SetTable(tableName).SetTitle("WishStories").SetDescription("WishS tories").AddCSS(cssTableNoWrap)
+	info.SetTable(tableName).SetTitle("WishStories").SetDescription("WishS tories").AddCSS(utils.CssTableNoWrap)
 
 	formList := wishStories.GetForm()
-	formList.SetPreProcessFn(t.preProcess)
+	formList.SetInsertFn(t.insert)
+	formList.SetUpdateFn(t.update)
 	formList.SetPostValidator(t.postValidator)
 	formList.AddField("Entity ID", "entity_id", db.Int8, form.Text)
-	formList.AddField("Body", "body", db.Varchar, form.RichText)
+	formList.AddField("Body", "body", db.Varchar, form.TextArea)
 	formList.AddField("Image", "image", db.Varchar, form.Text)
-	formList.AddField("Status", "status", db.Tinyint, form.Switch).FieldDefault("draft").
-		FieldOptions(types.FieldOptions{
-			{Text: "Completed", Value: "completed"},
-			{Text: "Draft", Value: "draft"},
-		})
+	formList.AddField("Status", "status", db.Tinyint, form.Switch).FieldOptions(t.statuses.ToFieldOptions())
 
-	formList.SetTable(tableName).SetTitle("WishStories").SetDescription("WishS tories")
+	formList.SetTable(tableName).SetTitle("WishStories").SetDescription("Wish Stories")
 
 	return wishStories
-}
-
-func (t *WishStory) preProcess(values form2.Values) form2.Values {
-	switch values.Get(form2.PostTypeKey) {
-	case "0": // update
-		values.Add("updated_at", time.Now().Format(time.RFC3339))
-	case "1": // create
-		values.Add("created_at", time.Now().Format(time.RFC3339))
-		values.Add("updated_at", time.Now().Format(time.RFC3339))
-	}
-	return values
 }
 
 func (t *WishStory) postValidator(values form2.Values) error {
@@ -116,6 +102,60 @@ func (t *WishStory) postValidator(values form2.Values) error {
 	}
 	if entity == nil {
 		return fmt.Errorf("not found entity %s", entityID)
+	}
+	return nil
+}
+
+func (t *WishStory) update(values form2.Values) error {
+	updateFields := []string{
+		"entity_id", "body", "image", "status", "updated_at",
+	}
+
+	m := make(map[string]interface{})
+	for k := range values {
+		v := values.Get(k)
+		if utils2.InArray(updateFields, k) && len(v) > 0 {
+			m[k] = v
+		}
+	}
+
+	id := values.Get("id")
+	userID := values.Get("user_id")
+	ulidValue, err := ulid.Parse(userID)
+	if err != nil {
+		return err
+	}
+	m["user_id"] = ulidValue
+	m["updated_at"] = time.Now()
+	if err = t.db.Table("wishes").Where("id = ?", id).Updates(m).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (t *WishStory) insert(values form2.Values) error {
+	insertFields := []string{
+		"entity_id", "body", "image", "status", "created_at", "updated_at",
+	}
+	m := make(map[string]interface{})
+	for k := range values {
+		v := values.Get(k)
+		if utils2.InArray(insertFields, k) && len(v) > 0 {
+			m[k] = v
+		}
+	}
+
+	userID := values.Get("user_id")
+	ulidValue, err := ulid.Parse(userID)
+	if err != nil {
+		return err
+	}
+	m["user_id"] = ulidValue
+	timeNow := time.Now()
+	m["created_at"] = timeNow
+	m["updated_at"] = timeNow
+	if err = t.db.Table("wishes").Create(m).Error; err != nil {
+		return err
 	}
 	return nil
 }

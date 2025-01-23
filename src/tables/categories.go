@@ -1,6 +1,7 @@
 package tables
 
 import (
+	"github.com/huyrun/admin_dashboard/src/utils"
 	"github.com/huyrun/go-admin/context"
 	"github.com/huyrun/go-admin/modules/db"
 	"github.com/huyrun/go-admin/plugins/admin/modules/table"
@@ -28,13 +29,13 @@ func (t *Category) GetCategoriesTable(ctx *context.Context) table.Table {
 	info.AddField("ID", "id", db.Int8).FieldSortable().FieldFilterable()
 	info.AddField("Name", "name", db.Varchar).FieldSortable().FieldFilterable()
 
-	info.SetTable(tableName).SetTitle("Categories").SetDescription("Categories").AddCSS(cssTableNoWrap)
+	info.SetTable(tableName).SetTitle("Categories").SetDescription("Categories").AddCSS(utils.CssTableNoWrap)
 
 	formList := categories.GetForm()
 	formList.AddField("ID", "id", db.Int8, form.Text).FieldDisableWhenCreate().FieldDisplayButCanNotEditWhenUpdate()
 	formList.AddField("Name", "name", db.Varchar, form.Text)
 
-	formList.SetTable(tableName).SetTitle("Categories").SetDescription("Categories").AddCSS(cssTableNoWrap)
+	formList.SetTable(tableName).SetTitle("Categories").SetDescription("Categories").AddCSS(utils.CssTableNoWrap)
 
 	return categories
 }

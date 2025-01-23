@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/huyrun/admin_dashboard/src/utils"
 	"github.com/huyrun/go-admin/context"
 	"github.com/huyrun/go-admin/modules/db"
 	form2 "github.com/huyrun/go-admin/plugins/admin/modules/form"
@@ -32,14 +33,14 @@ func (t *EntityTag) GetEntityTagTable(ctx *context.Context) table.Table {
 	info.AddField("ID", "id", db.Int8).FieldFilterable().FieldSortable()
 	info.AddField("Entity ID", "entity_id", db.Int8).FieldFilterable().FieldSortable().
 		FieldDisplay(func(value types.FieldModel) interface{} {
-			return linkToOtherTable("entities", value.Value)
+			return utils.LinkToOtherTable("entities", value.Value)
 		})
 	info.AddField("Tag ID", "tag_id", db.Text).FieldFilterable().FieldSortable().
 		FieldDisplay(func(value types.FieldModel) interface{} {
-			return linkToOtherTable("tags", value.Value)
+			return utils.LinkToOtherTable("tags", value.Value)
 		})
 
-	info.SetTable(tableName).SetTitle("EntityTags").SetDescription("Entity Tags").AddCSS(cssTableNoWrap)
+	info.SetTable(tableName).SetTitle("EntityTags").SetDescription("Entity Tags").AddCSS(utils.CssTableNoWrap)
 
 	formList := entityTags.GetForm()
 	formList.AddField("ID", "id", db.Int8, form.Text).FieldDisableWhenCreate().FieldDisplayButCanNotEditWhenUpdate()

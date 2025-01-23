@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/huyrun/admin_dashboard/embed"
+	utils2 "github.com/huyrun/admin_dashboard/src/utils"
 	"github.com/huyrun/go-admin/context"
 	"github.com/huyrun/go-admin/modules/db"
 	"github.com/huyrun/go-admin/modules/utils"
@@ -147,7 +148,7 @@ func (t *User) GetUsersTable(ctx *context.Context) table.Table {
 			return v.Format("2006-01-02 15:04:05")
 		})
 
-	info.SetTable(tableName).SetTitle("Users").SetDescription("Users").AddCSS(cssTableNoWrap)
+	info.SetTable(tableName).SetTitle("Users").SetDescription("Users").AddCSS(utils2.CssTableNoWrap)
 
 	formList := users.GetForm()
 	formList.SetInsertFn(t.insert)

@@ -1,6 +1,7 @@
 package tables
 
 import (
+	"github.com/huyrun/admin_dashboard/src/utils"
 	"github.com/huyrun/go-admin/context"
 	"github.com/huyrun/go-admin/modules/db"
 	"github.com/huyrun/go-admin/plugins/admin/modules/table"
@@ -28,7 +29,7 @@ func (t *Tag) GetTagsTable(ctx *context.Context) table.Table {
 	info.AddField("ID", "id", db.Int8).FieldSortable().FieldFilterable()
 	info.AddField("Tag Name", "tag_name", db.Text).FieldSortable().FieldFilterable()
 
-	info.SetTable(tableName).SetTitle("Tags").SetDescription("Tags").AddCSS(cssTableNoWrap)
+	info.SetTable(tableName).SetTitle("Tags").SetDescription("Tags").AddCSS(utils.CssTableNoWrap)
 
 	formList := tags.GetForm()
 	formList.AddField("ID", "id", db.Int8, form.Text).FieldDisableWhenCreate().FieldDisplayButCanNotEditWhenUpdate()

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/huyrun/admin_dashboard/src/utils"
 	"github.com/huyrun/go-admin/context"
 	"github.com/huyrun/go-admin/modules/db"
 	form2 "github.com/huyrun/go-admin/plugins/admin/modules/form"
@@ -44,7 +45,7 @@ func GetGooseDbVersionTable(ctx *context.Context) table.Table {
 			return v.Format("2006-01-02 15:04:05")
 		})
 
-	info.SetTable(tableName).SetTitle("GooseDbVersion").SetDescription("Goose DB Version").AddCSS(cssTableNoWrap)
+	info.SetTable(tableName).SetTitle("GooseDbVersion").SetDescription("Goose DB Version").AddCSS(utils.CssTableNoWrap)
 
 	formList := gooseDbVersion.GetForm()
 	formList.AddField("ID", "id", db.Int8, form.Default).FieldDisableWhenCreate().FieldDisplayButCanNotEditWhenUpdate()
