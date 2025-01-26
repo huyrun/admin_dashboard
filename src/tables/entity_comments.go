@@ -125,7 +125,7 @@ func (t *EntityCommentsTable) update(values form2.Values) error {
 		}
 	}
 
-	id := values.Get("id")
+	commentNo := values.Get("comment_no")
 	userID := values.Get("user_id")
 	ulidValue, err := ulid.Parse(userID)
 	if err != nil {
@@ -133,7 +133,7 @@ func (t *EntityCommentsTable) update(values form2.Values) error {
 	}
 	m["user_id"] = ulidValue
 	m["updated_at"] = time.Now()
-	if err = t.db.Table("wishes").Where("id = ?", id).Updates(m).Error; err != nil {
+	if err = t.db.Table("entity_comments").Where("comment_no = ?", commentNo).Updates(m).Error; err != nil {
 		return err
 	}
 	return nil
@@ -160,7 +160,7 @@ func (t *EntityCommentsTable) insert(values form2.Values) error {
 	timeNow := time.Now()
 	m["created_at"] = timeNow
 	m["updated_at"] = timeNow
-	if err = t.db.Table("wishes").Create(m).Error; err != nil {
+	if err = t.db.Table("entity_comments").Create(m).Error; err != nil {
 		return err
 	}
 	return nil
